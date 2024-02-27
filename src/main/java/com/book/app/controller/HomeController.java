@@ -25,7 +25,9 @@ public class HomeController implements Initializable {
     @FXML
     private ScrollPane lastSlider;
     @FXML
-    private Button nextButton;
+    private Button nextButton1;
+    @FXML
+    private Button preButton1;
     private int currentIndex = 0;
     private HBox lastList;
     private static final String[] IMAGE_URLS = {
@@ -36,12 +38,11 @@ public class HomeController implements Initializable {
             "https://via.placeholder.com/150",
             "https://via.placeholder.com/150"
     };
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         lastList = new HBox();
         lastList.setAlignment(Pos.CENTER);
-        lastList.setSpacing(10);
+        lastList.setSpacing(20);
         for (String imageUrl : IMAGE_URLS) {
             Image image = new Image("https://via.placeholder.com/200x400");
             ImageView imageView1 = new ImageView(image);
@@ -60,8 +61,8 @@ public class HomeController implements Initializable {
             imageView2.setFitHeight(181);
             StackPane stackPane2 = new StackPane(imageView2);
             Rectangle clip2 = new Rectangle(imageView2.getFitWidth(), imageView2.getFitHeight());
-            clip1.setArcWidth(20);
-            clip1.setArcHeight(20);
+            clip2.setArcWidth(20);
+            clip2.setArcHeight(20);
             imageView2.setClip(clip2);
             stackPane2.setPrefSize(116, 181);
             stackPane2.setLayoutX(26);
@@ -71,16 +72,24 @@ public class HomeController implements Initializable {
 
         lastSlider.setContent(lastList);
         lastSlider.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        nextButton.setOnAction(event -> nextImage());
-
+        nextButton1.setOnAction(event -> nextImage());
+        preButton1.setOnAction(actionEvent -> preImage());
     }
 
 
-
+    private void preImage() {
+        if (currentIndex >  0) {
+            currentIndex--;
+            double targetX = -currentIndex * 327; // 160 = kích thước hình ảnh (150) + khoảng cách (10)
+            TranslateTransition transition = new TranslateTransition(Duration.seconds(0.5), lastList);
+            transition.setToX(targetX);
+            transition.play();
+        }
+    }
     private void nextImage() {
         if (currentIndex < lastList.getChildren().size() - 3) {
             currentIndex++;
-            double targetX = -currentIndex * 327; // 160 = kích thước hình ảnh (150) + khoảng cách (10)
+            double targetX = - currentIndex * 327; // 160 = kích thước hình ảnh (150) + khoảng cách (10)
             TranslateTransition transition = new TranslateTransition(Duration.seconds(0.5), lastList);
             transition.setToX(targetX);
             transition.play();

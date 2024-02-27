@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.book.app.controller.AuthenticationController">
+   <children>
+      <Pane prefHeight="800.0" prefWidth="944.0" style="-fx-background-color: #f2ccbf;">
+         <children>
+            <ImageView fitHeight="478.0" fitWidth="761.0" layoutX="7.0" layoutY="172.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../static/images/login.jpg" />
+               </image>
+            </ImageView>
+         </children>
+      </Pane>
+      <Pane prefHeight="800.0" prefWidth="672.0" style="-fx-background-color: #fff;">
+         <children>
+            <Pane layoutX="62.0" layoutY="158.0" prefHeight="484.0" prefWidth="380.0">
+               <children>
+                  <Text layoutX="39.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: 700;" text="Account Login">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Text>
+                  <TextFlow layoutX="39.0" layoutY="59.0" prefHeight="44.0" prefWidth="301.0">
+                     <children>
+                        <Text fill="#a4adbc" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: 600;" text="If you are already an member you can login with username and password" wrappingWidth="274.1591796875">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </TextFlow>
+                  <Label fx:id="userNameLogin" ellipsisString="" layoutX="39.0" layoutY="136.0" text="User name" textFill="#7c8189">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Label>
+                  <TextField fx:id="inputNameLogin" layoutX="40.0" layoutY="159.0" prefHeight="44.0" prefWidth="301.0" promptText="username...">
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                  </TextField>
+                  <Label fx:id="passwordLogin" ellipsisString="" layoutX="39.0" layoutY="220.0" text="Password" textFill="#7c8189">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Label>
+                  <TextField fx:id="inputPasswordLogin" layoutX="40.0" layoutY="245.0" prefHeight="50.0" prefWidth="301.0" promptText="password...">
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                  </TextField>
+                  <CheckBox ellipsisString="" layoutX="40.0" layoutY="315.0" mnemonicParsing="false" style="-fx-font-weight: 700;" text="Remember me" textFill="#7c8189">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </CheckBox>
+                  <Button layoutX="42.0" layoutY="365.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="301.0" style="-fx-background-color: #2c73eb;" text="Login" textFill="WHITE">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <TextFlow layoutX="66.0" layoutY="429.0" prefHeight="24.0" prefWidth="213.0">
+                     <children>
+                        <Text fill="#7c8189" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: 600;" text="Dont have an account ?" />
+                        <Button mnemonicParsing="false" style="-fx-font-weight: 700; -fx-background-color: transperent;" text="Sign up here" textFill="#4684ed">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Button>
+                     </children>
+                  </TextFlow>
+               </children>
+            </Pane>
+         </children></Pane>
+   </children>
+</HBox>
