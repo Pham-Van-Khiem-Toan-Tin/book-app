@@ -1,4 +1,4 @@
-package com.book.app.controller;
+package com.book.app.Controller;
 
 import javafx.fxml.Initializable;
 
