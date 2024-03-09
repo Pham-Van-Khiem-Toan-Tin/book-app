@@ -13,6 +13,15 @@ public class User {
     private LocalDate createdAt;
     private Boolean admin;
     private Boolean enable;
+    private LocalDate updatedAt;
+
+    public LocalDate getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDate updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 
     public Boolean getAdmin() {
         return admin;

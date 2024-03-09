@@ -8,7 +8,7 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.book.app.Controller.SaleCategoryController"
+            fx:controller="com.book.app.Controller.admin.SaleCategoryController"
             prefHeight="400.0" prefWidth="600.0">
 
 </AnchorPane>

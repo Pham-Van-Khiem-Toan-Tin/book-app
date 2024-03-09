@@ -1,7 +1,9 @@
-package com.book.app.Controller;
+package com.book.app.Controller.admin;
 
 import com.book.app.Dao.impl.UserImpl;
 import com.book.app.Entity.User;
+import com.book.app.Utils.SearchUtils;
+import com.book.app.Utils.SortUtils;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -25,9 +27,23 @@ public class NewUserController implements Initializable {
     @FXML
     private PasswordField password;
     private TableView<User> tableView;
-
-
+    private String oldSearch;
+    private String oldSort;
     private Dialog<String> dialog;
+    public String getOldSearch() {
+        return oldSearch;
+    }
+    public void setOldSearch(String oldSearch) {
+        this.oldSearch = oldSearch;
+    }
+
+    public String getOldSort() {
+        return oldSort;
+    }
+
+    public void setOldSort(String oldSort) {
+        this.oldSort = oldSort;
+    }
 
     public Dialog<String> getDialog() {
         return dialog;
@@ -59,10 +75,19 @@ public class NewUserController implements Initializable {
             if (result) {
                 this.dialog.setResult("successfully");
                 this.dialog.close();
-                tableView.setItems(FXCollections.observableArrayList(dao.getAllUser()));
+                tableView.setItems(SortUtils.getSortList(oldSort, SearchUtils.getAllUserOldSearch(oldSearch)));
             }
     }
-
+    private boolean validateFields() {
+        return username.getText() != null && !username.getText().trim().isEmpty() &&
+                email.getText() != null && !email.getText().trim().isEmpty() &&
+                phone.getText() != null && !phone.getText().trim().isEmpty() &&
+                address.getText() != null && !address.getText().trim().isEmpty() &&
+                password.getText() != null && !password.getText().trim().isEmpty();
+    }
+    private void checkFields() {
+        submitButton.setDisable(!validateFields());
+    }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         UnaryOperator<TextFormatter.Change> phoneFilter = change -> {
@@ -83,5 +108,12 @@ public class NewUserController implements Initializable {
         };
         TextFormatter<String> usernameFormatter = new TextFormatter<>(usernameFilter);
         username.setTextFormatter(usernameFormatter);
+        username.textProperty().addListener((observable, oldValue, newValue) -> checkFields());
+        address.textProperty().addListener((observable, oldValue, newValue) -> checkFields());
+        email.textProperty().addListener((observable, oldValue, newValue) -> checkFields());
+        phone.textProperty().addListener((observable, oldValue, newValue) -> checkFields());
+        password.textProperty().addListener((observable, oldValue, newValue) -> checkFields());
+
+        checkFields();
     }
 }

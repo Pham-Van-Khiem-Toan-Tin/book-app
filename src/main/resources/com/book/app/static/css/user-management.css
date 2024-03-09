@@ -59,3 +59,32 @@
 .primary-button:pressed {
     -fx-background-color: #0056b3; /* Màu nền khi nhấn */
 }
+/* Remove default button appearance */
+/* Remove default button appearance */
+.combo-box .arrow-button {
+    -fx-background-color: transparent;
+}
+
+/* Customize arrow icon */
+.combo-box .arrow-button .arrow {
+
+    -fx-background-size: 10px;
+}
+
+/* Style for dropdown list */
+.combo-box-popup .list-view {
+    -fx-background-color: white; /* Background color of dropdown */
+    -fx-padding: 5px; /* Padding around items in dropdown */
+}
+
+/* Style for items in dropdown */
+.combo-box-popup .list-view .list-cell {
+    -fx-padding: 5px;
+}
+
+/* Style for selected item */
+.combo-box-base .text-field {
+    -fx-background-color: white; /* Background color of selected item */
+    -fx-border-color: #ccc; /* Border color of selected item */
+    -fx-border-width: 1px; /* Border width of selected item */
+}

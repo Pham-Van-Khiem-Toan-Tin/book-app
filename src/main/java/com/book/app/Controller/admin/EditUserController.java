@@ -1,19 +1,31 @@
-package com.book.app.Controller;
+package com.book.app.Controller.admin;
 
 import com.book.app.Dao.impl.UserImpl;
 import com.book.app.Entity.User;
+import com.book.app.Utils.DateUtils;
+import com.book.app.Utils.SearchUtils;
+import com.book.app.Utils.SortUtils;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 
+import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.function.UnaryOperator;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class EditUserController implements Initializable {
+    private String rootDirectory = "/com/book/app/";
     @FXML
     private TextField username, email, phone, address;
     @FXML
@@ -21,9 +33,27 @@ public class EditUserController implements Initializable {
     @FXML
     private Button submit;
     private User oldData;
+    private String oldSearch;
+    private String oldSort;
     private Dialog<String> dialog;
     private TableView<User> tableView;
     private UserImpl dao = new UserImpl();
+
+    public String getOldSearch() {
+        return oldSearch;
+    }
+
+    public void setOldSearch(String oldSearch) {
+        this.oldSearch = oldSearch;
+    }
+
+    public String getOldSort() {
+        return oldSort;
+    }
+
+    public void setOldSort(String oldSort) {
+        this.oldSort = oldSort;
+    }
 
     public TableView<User> getTableView() {
         return tableView;
@@ -106,7 +136,7 @@ public class EditUserController implements Initializable {
     }
 
     @FXML
-    public void submitEdit(ActionEvent event) {
+    public void submitEdit(ActionEvent event) throws IOException {
         User newUser = new User();
         newUser.setUsername(username.getText().trim());
         newUser.setEmail(email.getText().trim());
@@ -114,11 +144,13 @@ public class EditUserController implements Initializable {
         newUser.setAddress(address.getText().trim());
         newUser.setAdmin(role.getValue().equals("ADMIN") ? true : false);
         newUser.setId(oldData.getId());
+        newUser.setUpdatedAt(LocalDate.now());
         boolean resultEdit = dao.editUser(newUser);
+
         if (resultEdit) {
-            tableView.setItems(FXCollections.observableArrayList(dao.getAllUser()));
             this.dialog.setResult("submit");
             this.dialog.close();
         }
+        tableView.setItems(SortUtils.getSortList(oldSort,SearchUtils.getAllUserOldSearch(oldSearch)));
     }
 }

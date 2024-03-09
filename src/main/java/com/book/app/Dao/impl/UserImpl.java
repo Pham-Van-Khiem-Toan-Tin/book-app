@@ -17,6 +17,50 @@ import java.util.List;
 public class UserImpl implements IUser {
     private DBConnection db = new DBConnection();
     private ResultSet resultSet;
+
+    @Override
+    public User login(String username, String password) {
+        String sql = "SELECT * FROM user WHERE username = ?";
+        try {
+
+            db.initPrepar(sql);
+            db.getPreparedStatement().setString(1, username);
+            resultSet = db.executeSelect();
+            int count = 0;
+            User user = null;
+            while (resultSet.next()) {
+                count++;
+                if (count > 1) {
+                    // Nếu tìm thấy nhiều hơn một bản ghi, trả về null hoặc xử lý theo cách khác tùy thuộc vào yêu cầu của bạn
+                    return null;
+                }
+                if (PasswordUtils.checkPassword(password, resultSet.getString("password"))) {
+                    user = new User();
+                    user.setId(resultSet.getInt("userId"));
+                    user.setPassword(resultSet.getString("password"));
+                    user.setUsername(resultSet.getString("username"));
+                    user.setPhone(resultSet.getString("phone"));
+                    user.setAddress(resultSet.getString("address"));
+                    int isAdminValue = resultSet.getInt("isAdmin");
+                    // Chuyển đổi giá trị từ TINYINT sang boolean
+                    Boolean isAdmin = (isAdminValue == 1);
+                    user.setAdmin(isAdmin);
+                    user.setEmail(resultSet.getString("email"));
+                    int isEnableValue = resultSet.getInt("isEnable");
+                    Boolean isEnable = (isEnableValue == 1);
+                    user.setEnable(isEnable);
+                    user.setCreatedAt(resultSet.getDate("created_at").toLocalDate());
+                }
+            }
+            return user; // Trả về đối tượng User nếu thông tin đăng nhập hợp lệ
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            db.closeConnection();
+        }
+        return null;
+    }
+
     @Override
     public List<User> getAllUser() {
         List<User> userList = new ArrayList<>();
@@ -77,7 +121,7 @@ public class UserImpl implements IUser {
     @Override
     public boolean editUser(User user) {
         String sql = "UPDATE user " +
-                "SET username = ?, email = ?, phone = ?, address  = ?, isAdmin = ? " +
+                "SET username = ?, email = ?, phone = ?, address  = ?, isAdmin = ?, updated_at = ? " +
                 "WHERE userId = ?";
         try {
             db.initPrepar(sql);
@@ -87,7 +131,8 @@ public class UserImpl implements IUser {
             db.getPreparedStatement().setString(3, user.getPhone());
             db.getPreparedStatement().setString(4, user.getAddress()); // Chuyển đổi Date sang java.sql.Date
             db.getPreparedStatement().setBoolean(5, user.getAdmin());
-            db.getPreparedStatement().setInt(6, user.getId());
+            db.getPreparedStatement().setDate(6, Date.valueOf(user.getUpdatedAt()));
+            db.getPreparedStatement().setInt(7, user.getId());
 
             // Thực thi truy vấn
             int rowsUpdated = db.getPreparedStatement().executeUpdate();
@@ -112,6 +157,31 @@ public class UserImpl implements IUser {
             db.initPrepar(sql);
             // Thiết lập các tham số cho câu lệnh SQL
             db.getPreparedStatement().setBoolean(1, enable);
+            db.getPreparedStatement().setInt(2, id);
+
+            // Thực thi truy vấn
+            int rowsUpdated = db.getPreparedStatement().executeUpdate();
+            System.out.println("row updated: " + rowsUpdated);
+            // Trả về true nếu cập nhật thành công ít nhất một hàng
+            return rowsUpdated > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Trả về false nếu có lỗi xảy ra khi cập nhật
+            return false;
+        } finally {
+            db.closeConnection(); // Đảm bảo kết nối được đóng sau khi sử dụng xong
+        }
+    }
+
+    @Override
+    public boolean resetPassword(int id, String newPassword) {
+        String sql = "UPDATE user " +
+                "SET password = ? " +
+                "WHERE userId = ?";
+        try {
+            db.initPrepar(sql);
+            // Thiết lập các tham số cho câu lệnh SQL
+            db.getPreparedStatement().setString(1, newPassword);
             db.getPreparedStatement().setInt(2, id);
 
             // Thực thi truy vấn

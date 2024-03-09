@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Text?>
 
-<DialogPane prefHeight="539.0" prefWidth="450.0" style="-fx-padding: 0;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.book.app.Controller.EditUserController">
+<DialogPane prefHeight="539.0" prefWidth="450.0" style="-fx-padding: 0;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.book.app.Controller.admin.EditUserController">
    <header>
       <Pane prefHeight="540.0" prefWidth="450.0">
          <children>

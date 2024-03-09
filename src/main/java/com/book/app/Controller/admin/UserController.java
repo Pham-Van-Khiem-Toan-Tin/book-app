@@ -1,10 +1,16 @@
-package com.book.app.Controller;
+package com.book.app.Controller.admin;
 
 import com.book.app.Dao.impl.UserImpl;
 import com.book.app.Entity.User;
+import com.book.app.Utils.DateUtils;
+import com.book.app.Utils.SortUtils;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,7 +27,11 @@ import javafx.util.Callback;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class UserController implements Initializable {
     private String rootDirectory = "/com/book/app/";
@@ -41,6 +51,12 @@ public class UserController implements Initializable {
     private TableColumn<User, LocalDate> createdCol;
     @FXML
     private TableColumn<User, Void> actionCol;
+    @FXML
+    private TextField textSearch;
+    @FXML
+    private Button btnSearch;
+    @FXML
+    private ComboBox<String> sortCombo;
     private UserImpl dao = new UserImpl();
 
     @Override
@@ -50,20 +66,15 @@ public class UserController implements Initializable {
         emailCol.setCellValueFactory(new PropertyValueFactory<User, String>("email"));
         phoneCol.setCellValueFactory(new PropertyValueFactory<User, String>("phone"));
         createdCol.setCellValueFactory(new PropertyValueFactory<User, LocalDate>("createdAt"));
-        roleCol.setCellFactory(param -> new TableCell<User, String>() {
+        roleCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<User, String>, ObservableValue<String>>() {
             @Override
-            protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty) {
-                    setGraphic(null);
-                } else {
-                    User user = getTableView().getItems().get(getIndex());
-                    if (user.getAdmin()) {
-                        setText("admin");
-                    } else {
-                        setText("user");
-                    }
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<User, String> param) {
+                User user = param.getValue();
+                if (user != null) {
+                    String role = user.getAdmin() ? "admin" : "user";
+                    return new SimpleStringProperty(role);
                 }
+                return null;
             }
         });
 
@@ -97,9 +108,16 @@ public class UserController implements Initializable {
                 FontAwesomeIconView resetPassIcon = new FontAwesomeIconView(FontAwesomeIcon.KEY);
                 resetPassButton.setGraphic(resetPassIcon);
                 resetPassButton.setOnAction(event -> {
-
+                    String oldPassword = getTableView().getItems().get(getIndex()).getPassword();
+                    int userId = getTableView().getItems().get(getIndex()).getId();
+                    try {
+                        openDialogResetPassword(event, oldPassword, userId);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                 });
             }
+
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
@@ -115,6 +133,9 @@ public class UserController implements Initializable {
                 }
             }
         });
+        btnSearch.setOnAction(event -> search());
+        sortCombo.getItems().addAll("id: Ascending", "username: A-Z", "created_at: Ascending");
+        sortCombo.setOnAction(event -> sort(tableview.getItems()));
         tableview.setItems(FXCollections.observableArrayList(dao.getAllUser()));
 
     }
@@ -123,10 +144,39 @@ public class UserController implements Initializable {
         tableview.setItems(FXCollections.observableArrayList(dao.getAllUser()));
     }
 
+    public void sort(ObservableList<User> tableList) {
+        String sortType = sortCombo.getValue();
+        SortedList<User> sortedData = SortUtils.getSortList(sortType, tableList);
+        tableview.setItems(sortedData);
+    }
+    public void search() {
+        ObservableList<User> usersList = FXCollections.observableArrayList();
+        List<User> users = dao.getAllUser();
+        if (textSearch.getText() != null && !textSearch.getText().trim().equals("")) {
+            String keyword = textSearch.getText().trim();
+            Pattern pattern = Pattern.compile(keyword, Pattern.CASE_INSENSITIVE);
+            usersList = users
+                    .stream()
+                    .filter(user -> {
+                        String admin = user.getAdmin() ? "admin" : "user";
+                        return pattern.matcher(user.getUsername()).find() ||
+                                pattern.matcher(user.getPhone()).find() ||
+                                pattern.matcher(String.valueOf(user.getId())).find() ||
+                                pattern.matcher(user.getEmail()).find() ||
+                                pattern.matcher(admin).find() ||
+                                pattern.matcher(DateUtils
+                                        .convertLocalDateToStringPattern(user.getCreatedAt(), "dd/MM/yyyy")).find();
+                            }
+                            )
+                    .collect(Collectors.toCollection(FXCollections::observableArrayList));
+            tableview.setItems(usersList);
+        } else {
+            tableview.setItems(FXCollections.observableArrayList(users));
+        }
+    }
+
     @FXML
     public void openDialogNewUser(ActionEvent event) throws IOException {
-        System.out.println("chay vao day");
-        System.out.println(UserController.class.getResource("dialog/new-user.fxml"));
         FXMLLoader loader = new FXMLLoader(getClass().getResource(rootDirectory + "dialog/new-user.fxml"));
         Parent root = loader.load();
         Dialog<String> dialog = new Dialog<>();
@@ -138,6 +188,8 @@ public class UserController implements Initializable {
         NewUserController controller = loader.getController();
         controller.setDialog(dialog);
         controller.setTableView(tableview);
+        controller.setOldSort(Objects.requireNonNullElse(sortCombo.getValue(), ""));
+        controller.setOldSearch(Objects.requireNonNullElse(textSearch.getText(), ""));
         stage.setOnCloseRequest(e -> {
             dialog.setResult("close");
             dialog.close();
@@ -145,6 +197,7 @@ public class UserController implements Initializable {
         // Hiển thị dialog và đợi cho đến khi nó đóng
         dialog.show();
     }
+
     private void openEditDialogUser(ActionEvent event, User user) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(rootDirectory + "dialog/edit-user.fxml"));
         Parent root = loader.load();
@@ -158,6 +211,8 @@ public class UserController implements Initializable {
         controller.setDialog(dialog);
         controller.setTableView(tableview);
         controller.setOldData(user);
+        controller.setOldSort(Objects.requireNonNullElse(sortCombo.getValue(), ""));
+        controller.setOldSearch(Objects.requireNonNullElse(textSearch.getText(), ""));
         stage.setOnCloseRequest(e -> {
             dialog.setResult("close");
             dialog.close();
@@ -165,10 +220,31 @@ public class UserController implements Initializable {
         // Hiển thị dialog và đợi cho đến khi nó đóng
         dialog.show();
     }
-    private void openDeleteDialogUser(ActionEvent event) throws IOException {
 
-    }
     private void openLockDialogUser(ActionEvent event) throws IOException {
 
+    }
+    private void openDialogResetPassword(ActionEvent event, String oldPassword, int id) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(rootDirectory + "dialog/reset-password.fxml"));
+        Parent root = loader.load();
+        Dialog<String> dialog = new Dialog<>();
+        dialog.getDialogPane().setContent(root);
+        dialog.setResizable(false);
+        Scene dialogScene = dialog.getDialogPane().getScene();
+        dialogScene.getStylesheets().add(getClass().getResource(rootDirectory + "static/css/reset-password.css").toExternalForm());
+        Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
+        ResetPasswordController controller = loader.getController();
+        controller.setDialog(dialog);
+        controller.setTableView(tableview);
+        controller.setOldData(oldPassword);
+        controller.setUserId(id);
+        controller.setOldSearch(Objects.requireNonNullElse(textSearch.getText(), ""));
+        controller.setOldSort(Objects.requireNonNullElse(sortCombo.getValue(), ""));
+        stage.setOnCloseRequest(e -> {
+            dialog.setResult("close");
+            dialog.close();
+        });
+        // Hiển thị dialog và đợi cho đến khi nó đóng
+        dialog.show();
     }
 }
