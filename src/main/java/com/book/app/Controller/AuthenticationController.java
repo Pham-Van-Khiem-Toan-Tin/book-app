@@ -1,7 +1,7 @@
 package com.book.app.Controller;
 
-import com.book.app.Dao.impl.UserImpl;
-import com.book.app.Entity.User;
+import com.book.app.Dao.impl.EmployeeDaoImpl;
+import com.book.app.Entity.EmployeeEntity;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -27,7 +27,7 @@ public class AuthenticationController implements Initializable {
     private PasswordField inputPasswordLogin;
     @FXML
     private Button submitButton;
-    private UserImpl dao = new UserImpl();
+    private EmployeeDaoImpl dao = new EmployeeDaoImpl();
     private String root = "/com/book/app/";
     private boolean validateFields() {
         return inputNameLogin.getText() != null && !inputNameLogin.getText().trim().isEmpty() &&
@@ -53,7 +53,7 @@ public class AuthenticationController implements Initializable {
         checkFields();
     }
     private void login(ActionEvent event) {
-        User user = dao.login(inputNameLogin.getText().trim(), inputPasswordLogin.getText().trim());
+        EmployeeEntity user = dao.login(inputNameLogin.getText().trim(), inputPasswordLogin.getText().trim());
         if (user != null) {
             String fxmFile, cssFile;
             fxmFile = root + (user.getAdmin() ? "admin/user-management.fxml": "home/home.fxml");

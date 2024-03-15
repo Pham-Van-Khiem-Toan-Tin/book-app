@@ -174,7 +174,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </ComboBox>
-                  <Button fx:id="newUser" mnemonicParsing="false" onAction="#openDialogNewUser" prefHeight="40.0" prefWidth="88.0" text="Add user" textFill="WHITE">
+                  <Button fx:id="newUser" mnemonicParsing="false" onAction="#openDialogNewEmployee" prefHeight="40.0" prefWidth="88.0" text="Add user" textFill="WHITE">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>

@@ -1,12 +1,9 @@
 package com.book.app.Dao.impl;
 
 import com.book.app.Dao.DBConnection;
-import com.book.app.Dao.IUser;
-import com.book.app.Entity.User;
+import com.book.app.Dao.IEmployeeDao;
+import com.book.app.Entity.EmployeeEntity;
 import com.book.app.Utils.PasswordUtils;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.scene.control.CheckBox;
 
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -14,62 +11,28 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserImpl implements IUser {
+public class EmployeeDaoImpl implements IEmployeeDao {
     private DBConnection db = new DBConnection();
     private ResultSet resultSet;
 
     @Override
-    public User login(String username, String password) {
-        String sql = "SELECT * FROM user WHERE username = ?";
+    public EmployeeEntity login(String username, String password) {
+        String sql = "SELECT * FROM user WHERE username = ? AND password = ?";
         try {
 
             db.initPrepar(sql);
             db.getPreparedStatement().setString(1, username);
+            db.getPreparedStatement().setString(2, PasswordUtils.hashPassword(password));
             resultSet = db.executeSelect();
             int count = 0;
-            User user = null;
+            EmployeeEntity user = null;
             while (resultSet.next()) {
                 count++;
                 if (count > 1) {
                     // Nếu tìm thấy nhiều hơn một bản ghi, trả về null hoặc xử lý theo cách khác tùy thuộc vào yêu cầu của bạn
                     return null;
                 }
-                if (PasswordUtils.checkPassword(password, resultSet.getString("password"))) {
-                    user = new User();
-                    user.setId(resultSet.getInt("userId"));
-                    user.setPassword(resultSet.getString("password"));
-                    user.setUsername(resultSet.getString("username"));
-                    user.setPhone(resultSet.getString("phone"));
-                    user.setAddress(resultSet.getString("address"));
-                    int isAdminValue = resultSet.getInt("isAdmin");
-                    // Chuyển đổi giá trị từ TINYINT sang boolean
-                    Boolean isAdmin = (isAdminValue == 1);
-                    user.setAdmin(isAdmin);
-                    user.setEmail(resultSet.getString("email"));
-                    int isEnableValue = resultSet.getInt("isEnable");
-                    Boolean isEnable = (isEnableValue == 1);
-                    user.setEnable(isEnable);
-                    user.setCreatedAt(resultSet.getDate("created_at").toLocalDate());
-                }
-            }
-            return user; // Trả về đối tượng User nếu thông tin đăng nhập hợp lệ
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            db.closeConnection();
-        }
-        return null;
-    }
-
-    @Override
-    public List<User> getAllUser() {
-        List<User> userList = new ArrayList<>();
-        String sql = "SELECT * FROM user";
-        try {
-            db.initPrepar(sql);
-            resultSet = db.executeSelect();
-            while (resultSet.next()) {
-                User user = new User();
+                user = new EmployeeEntity();
                 user.setId(resultSet.getInt("userId"));
                 user.setPassword(resultSet.getString("password"));
                 user.setUsername(resultSet.getString("username"));
@@ -83,7 +46,41 @@ public class UserImpl implements IUser {
                 int isEnableValue = resultSet.getInt("isEnable");
                 Boolean isEnable = (isEnableValue == 1);
                 user.setEnable(isEnable);
-                user.setCreatedAt(resultSet.getDate("created_at").toLocalDate());
+                user.setCreated_at(resultSet.getDate("created_at").toLocalDate());
+
+            }
+            return user; // Trả về đối tượng User nếu thông tin đăng nhập hợp lệ
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            db.closeConnection();
+        }
+        return null;
+    }
+
+    @Override
+    public List<EmployeeEntity> getAllEmployee() {
+        List<EmployeeEntity> userList = new ArrayList<>();
+        String sql = "SELECT * FROM user";
+        try {
+            db.initPrepar(sql);
+            resultSet = db.executeSelect();
+            while (resultSet.next()) {
+                EmployeeEntity user = new EmployeeEntity();
+                user.setId(resultSet.getInt("userId"));
+                user.setPassword(resultSet.getString("password"));
+                user.setUsername(resultSet.getString("username"));
+                user.setPhone(resultSet.getString("phone"));
+                user.setAddress(resultSet.getString("address"));
+                int isAdminValue = resultSet.getInt("isAdmin");
+                // Chuyển đổi giá trị từ TINYINT sang boolean
+                Boolean isAdmin = (isAdminValue == 1);
+                user.setAdmin(isAdmin);
+                user.setEmail(resultSet.getString("email"));
+                int isEnableValue = resultSet.getInt("isEnable");
+                Boolean isEnable = (isEnableValue == 1);
+                user.setEnable(isEnable);
+                user.setCreated_at(resultSet.getDate("created_at").toLocalDate());
                 userList.add(user);
             }
         } catch (Exception e) {
@@ -95,7 +92,7 @@ public class UserImpl implements IUser {
     }
 
     @Override
-    public boolean addUser(User user) {
+    public boolean addEmployee(EmployeeEntity user) {
         String sql = "INSERT INTO user (username, password, email, phone, address, isAdmin, isEnable, created_at) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try {
@@ -119,7 +116,7 @@ public class UserImpl implements IUser {
     }
 
     @Override
-    public boolean editUser(User user) {
+    public boolean editEmployee(EmployeeEntity user) {
         String sql = "UPDATE user " +
                 "SET username = ?, email = ?, phone = ?, address  = ?, isAdmin = ?, updated_at = ? " +
                 "WHERE userId = ?";
@@ -149,7 +146,7 @@ public class UserImpl implements IUser {
     }
 
     @Override
-    public boolean lockOrUnLockUser(int id, Boolean enable) {
+    public boolean lockOrUnLockEmployee(int id, Boolean enable) {
         String sql = "UPDATE user " +
                 "SET isEnable = ? " +
                 "WHERE userId = ?";

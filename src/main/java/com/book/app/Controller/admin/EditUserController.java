@@ -1,28 +1,20 @@
 package com.book.app.Controller.admin;
 
-import com.book.app.Dao.impl.UserImpl;
-import com.book.app.Entity.User;
-import com.book.app.Utils.DateUtils;
+import com.book.app.Dao.impl.EmployeeDaoImpl;
+import com.book.app.Entity.EmployeeEntity;
 import com.book.app.Utils.SearchUtils;
 import com.book.app.Utils.SortUtils;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.control.*;
 
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.function.UnaryOperator;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 public class EditUserController implements Initializable {
     private String rootDirectory = "/com/book/app/";
@@ -32,12 +24,12 @@ public class EditUserController implements Initializable {
     private ComboBox<String> role;
     @FXML
     private Button submit;
-    private User oldData;
+    private EmployeeEntity oldData;
     private String oldSearch;
     private String oldSort;
     private Dialog<String> dialog;
-    private TableView<User> tableView;
-    private UserImpl dao = new UserImpl();
+    private TableView<EmployeeEntity> tableView;
+    private EmployeeDaoImpl dao = new EmployeeDaoImpl();
 
     public String getOldSearch() {
         return oldSearch;
@@ -55,11 +47,11 @@ public class EditUserController implements Initializable {
         this.oldSort = oldSort;
     }
 
-    public TableView<User> getTableView() {
+    public TableView<EmployeeEntity> getTableView() {
         return tableView;
     }
 
-    public void setTableView(TableView<User> tableView) {
+    public void setTableView(TableView<EmployeeEntity> tableView) {
         this.tableView = tableView;
     }
 
@@ -71,7 +63,7 @@ public class EditUserController implements Initializable {
         this.dialog = dialog;
     }
 
-    public User getOldData() {
+    public EmployeeEntity getOldData() {
         return oldData;
     }
 
@@ -106,7 +98,7 @@ public class EditUserController implements Initializable {
         submit.setDisable(!checkOldData() || !validateFields());
     }
 
-    public void setOldData(User oldData) {
+    public void setOldData(EmployeeEntity oldData) {
         this.oldData = oldData;
         username.setText(this.oldData.getUsername());
         email.setText(this.oldData.getEmail());
@@ -137,7 +129,7 @@ public class EditUserController implements Initializable {
 
     @FXML
     public void submitEdit(ActionEvent event) throws IOException {
-        User newUser = new User();
+        EmployeeEntity newUser = new EmployeeEntity();
         newUser.setUsername(username.getText().trim());
         newUser.setEmail(email.getText().trim());
         newUser.setPhone(phone.getText().trim());
@@ -145,7 +137,7 @@ public class EditUserController implements Initializable {
         newUser.setAdmin(role.getValue().equals("ADMIN") ? true : false);
         newUser.setId(oldData.getId());
         newUser.setUpdatedAt(LocalDate.now());
-        boolean resultEdit = dao.editUser(newUser);
+        boolean resultEdit = dao.editEmployee(newUser);
 
         if (resultEdit) {
             this.dialog.setResult("submit");

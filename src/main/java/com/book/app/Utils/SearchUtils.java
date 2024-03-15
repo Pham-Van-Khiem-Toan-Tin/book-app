@@ -1,7 +1,7 @@
 package com.book.app.Utils;
 
-import com.book.app.Dao.impl.UserImpl;
-import com.book.app.Entity.User;
+import com.book.app.Dao.impl.EmployeeDaoImpl;
+import com.book.app.Entity.EmployeeEntity;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -10,10 +10,10 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class SearchUtils {
-    private static UserImpl dao = new UserImpl();
-    public static ObservableList<User> getAllUserOldSearch(String oldSearch) {
-        ObservableList<User> usersList = FXCollections.observableArrayList();
-        List<User> users = dao.getAllUser();
+    private static EmployeeDaoImpl dao = new EmployeeDaoImpl();
+    public static ObservableList<EmployeeEntity> getAllUserOldSearch(String oldSearch) {
+        ObservableList<EmployeeEntity> usersList = FXCollections.observableArrayList();
+        List<EmployeeEntity> users = dao.getAllEmployee();
         if (!oldSearch.isEmpty()) {
             Pattern pattern = Pattern.compile(oldSearch, Pattern.CASE_INSENSITIVE);
             usersList = users

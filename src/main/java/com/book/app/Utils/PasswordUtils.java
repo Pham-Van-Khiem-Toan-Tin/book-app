@@ -2,19 +2,33 @@ package com.book.app.Utils;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.KeySpec;
 import java.util.Base64;
 
 public class PasswordUtils {
+    private static final String SecretKey = "yourSecretKey";
+    private static byte[] getSHA256Hash(String input) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(input.getBytes(StandardCharsets.UTF_8));
+            return hash;
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    private static final byte[] FIXED_SALT = getSHA256Hash(SecretKey);
     public static String hashPassword(String password) throws NoSuchAlgorithmException {
         byte[] salt = generateSalt();
         byte[] hashedPassword = hashPassword(password.toCharArray(), salt);
         return Base64.getEncoder().encodeToString(salt) + "$" + Base64.getEncoder().encodeToString(hashedPassword);
     }
 
-    // Hàm này kiểm tra mật khẩu đã mã hóa có khớp với mật khẩu ban đầu không
+
     public static boolean checkPassword(String candidatePassword, String storedPassword) throws NoSuchAlgorithmException {
         String[] parts = storedPassword.split("\\$");
         byte[] salt = Base64.getDecoder().decode(parts[0]);
@@ -24,15 +38,17 @@ public class PasswordUtils {
         return constantTimeEquals(candidateHashedPassword, hashedPassword);
     }
 
-    // Hàm này sinh salt
+
     private static byte[] generateSalt() {
-        SecureRandom random = new SecureRandom();
-        byte[] salt = new byte[16];
-        random.nextBytes(salt);
-        return salt;
+//        SecureRandom random = new SecureRandom();
+//        byte[] salt = new byte[16];
+//        random.nextBytes(salt);
+//        return salt;
+        return FIXED_SALT;
     }
 
-    // Hàm này sử dụng PBE (Password-Based Encryption) để mã hóa mật khẩu
+
+    
     private static byte[] hashPassword(char[] password, byte[] salt) throws NoSuchAlgorithmException {
         try {
             KeySpec spec = new PBEKeySpec(password, salt, 65536, 128);

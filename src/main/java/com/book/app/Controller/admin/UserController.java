@@ -1,7 +1,7 @@
 package com.book.app.Controller.admin;
 
-import com.book.app.Dao.impl.UserImpl;
-import com.book.app.Entity.User;
+import com.book.app.Dao.impl.EmployeeDaoImpl;
+import com.book.app.Entity.EmployeeEntity;
 import com.book.app.Utils.DateUtils;
 import com.book.app.Utils.SortUtils;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
@@ -36,49 +36,49 @@ import java.util.stream.Collectors;
 public class UserController implements Initializable {
     private String rootDirectory = "/com/book/app/";
     @FXML
-    private TableView<User> tableview;
+    private TableView<EmployeeEntity> tableview;
     @FXML
-    private TableColumn<User, String> nameCol;
+    private TableColumn<EmployeeEntity, String> nameCol;
     @FXML
-    private TableColumn<User, String> phoneCol;
+    private TableColumn<EmployeeEntity, String> phoneCol;
     @FXML
-    private TableColumn<User, String> emailCol;
+    private TableColumn<EmployeeEntity, String> emailCol;
     @FXML
-    private TableColumn<User, String> roleCol;
+    private TableColumn<EmployeeEntity, String> roleCol;
     @FXML
-    private TableColumn<User, Integer> idCol;
+    private TableColumn<EmployeeEntity, Integer> idCol;
     @FXML
-    private TableColumn<User, LocalDate> createdCol;
+    private TableColumn<EmployeeEntity, LocalDate> createdCol;
     @FXML
-    private TableColumn<User, Void> actionCol;
+    private TableColumn<EmployeeEntity, Void> actionCol;
     @FXML
     private TextField textSearch;
     @FXML
     private Button btnSearch;
     @FXML
     private ComboBox<String> sortCombo;
-    private UserImpl dao = new UserImpl();
+    private EmployeeDaoImpl dao = new EmployeeDaoImpl();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        idCol.setCellValueFactory(new PropertyValueFactory<User, Integer>("id"));
-        nameCol.setCellValueFactory(new PropertyValueFactory<User, String>("username"));
-        emailCol.setCellValueFactory(new PropertyValueFactory<User, String>("email"));
-        phoneCol.setCellValueFactory(new PropertyValueFactory<User, String>("phone"));
-        createdCol.setCellValueFactory(new PropertyValueFactory<User, LocalDate>("createdAt"));
-        roleCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<User, String>, ObservableValue<String>>() {
+        idCol.setCellValueFactory(new PropertyValueFactory<EmployeeEntity, Integer>("id"));
+        nameCol.setCellValueFactory(new PropertyValueFactory<EmployeeEntity, String>("username"));
+        emailCol.setCellValueFactory(new PropertyValueFactory<EmployeeEntity, String>("email"));
+        phoneCol.setCellValueFactory(new PropertyValueFactory<EmployeeEntity, String>("phone"));
+        createdCol.setCellValueFactory(new PropertyValueFactory<EmployeeEntity, LocalDate>("createdAt"));
+        roleCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<EmployeeEntity, String>, ObservableValue<String>>() {
             @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<User, String> param) {
-                User user = param.getValue();
-                if (user != null) {
-                    String role = user.getAdmin() ? "admin" : "user";
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<EmployeeEntity, String> param) {
+                EmployeeEntity employee = param.getValue();
+                if (employee != null) {
+                    String role = employee.getAdmin() ? "admin" : "user";
                     return new SimpleStringProperty(role);
                 }
                 return null;
             }
         });
 
-        actionCol.setCellFactory(param -> new TableCell<User, Void>() {
+        actionCol.setCellFactory(param -> new TableCell<EmployeeEntity, Void>() {
             private final Button editButton = new Button();
             private final Button lockButton = new Button();
             private final Button resetPassButton = new Button();
@@ -93,17 +93,17 @@ public class UserController implements Initializable {
                 FontAwesomeIconView editIcon = new FontAwesomeIconView(FontAwesomeIcon.EDIT);
                 editButton.setGraphic(editIcon);
                 editButton.setOnAction(event -> {
-                    User getPatient = getTableView().getItems().get(getIndex());
+                    EmployeeEntity getPatient = getTableView().getItems().get(getIndex());
                     try {
-                        openEditDialogUser(event, getPatient);
+                        openEditDialogEmployee(event, getPatient);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
                 });
                 lockButton.setOnAction(event -> {
-                    User getPatient = getTableView().getItems().get(getIndex());
-                    dao.lockOrUnLockUser(getPatient.getId(), !getPatient.getEnable());
-                    updateUserList();
+                    EmployeeEntity getPatient = getTableView().getItems().get(getIndex());
+                    dao.lockOrUnLockEmployee(getPatient.getId(), !getPatient.getEnable());
+                    updateEmployeeList();
                 });
                 FontAwesomeIconView resetPassIcon = new FontAwesomeIconView(FontAwesomeIcon.KEY);
                 resetPassButton.setGraphic(resetPassIcon);
@@ -124,7 +124,7 @@ public class UserController implements Initializable {
                 if (empty) {
                     setGraphic(null);
                 } else {
-                    User user = getTableView().getItems().get(getIndex());
+                    EmployeeEntity user = getTableView().getItems().get(getIndex());
                     if (user != null) {
                         FontAwesomeIconView lockIcon = new FontAwesomeIconView(user.getEnable() ? FontAwesomeIcon.LOCK : FontAwesomeIcon.UNLOCK);
                         lockButton.setGraphic(lockIcon);
@@ -136,47 +136,47 @@ public class UserController implements Initializable {
         btnSearch.setOnAction(event -> search());
         sortCombo.getItems().addAll("id: Ascending", "username: A-Z", "created_at: Ascending");
         sortCombo.setOnAction(event -> sort(tableview.getItems()));
-        tableview.setItems(FXCollections.observableArrayList(dao.getAllUser()));
+        tableview.setItems(FXCollections.observableArrayList(dao.getAllEmployee()));
 
     }
 
-    public void updateUserList() {
-        tableview.setItems(FXCollections.observableArrayList(dao.getAllUser()));
+    public void updateEmployeeList() {
+        tableview.setItems(FXCollections.observableArrayList(dao.getAllEmployee()));
     }
 
-    public void sort(ObservableList<User> tableList) {
+    public void sort(ObservableList<EmployeeEntity> tableList) {
         String sortType = sortCombo.getValue();
-        SortedList<User> sortedData = SortUtils.getSortList(sortType, tableList);
+        SortedList<EmployeeEntity> sortedData = SortUtils.getSortList(sortType, tableList);
         tableview.setItems(sortedData);
     }
     public void search() {
-        ObservableList<User> usersList = FXCollections.observableArrayList();
-        List<User> users = dao.getAllUser();
+        ObservableList<EmployeeEntity> employeesList = FXCollections.observableArrayList();
+        List<EmployeeEntity> employees = dao.getAllEmployee();
         if (textSearch.getText() != null && !textSearch.getText().trim().equals("")) {
             String keyword = textSearch.getText().trim();
             Pattern pattern = Pattern.compile(keyword, Pattern.CASE_INSENSITIVE);
-            usersList = users
+            employeesList = employees
                     .stream()
-                    .filter(user -> {
-                        String admin = user.getAdmin() ? "admin" : "user";
-                        return pattern.matcher(user.getUsername()).find() ||
-                                pattern.matcher(user.getPhone()).find() ||
-                                pattern.matcher(String.valueOf(user.getId())).find() ||
-                                pattern.matcher(user.getEmail()).find() ||
+                    .filter(employee -> {
+                        String admin = employee.getAdmin() ? "admin" : "user";
+                        return pattern.matcher(employee.getUsername()).find() ||
+                                pattern.matcher(employee.getPhone()).find() ||
+                                pattern.matcher(String.valueOf(employee.getId())).find() ||
+                                pattern.matcher(employee.getEmail()).find() ||
                                 pattern.matcher(admin).find() ||
                                 pattern.matcher(DateUtils
-                                        .convertLocalDateToStringPattern(user.getCreatedAt(), "dd/MM/yyyy")).find();
+                                        .convertLocalDateToStringPattern(employee.getCreatedAt(), "dd/MM/yyyy")).find();
                             }
                             )
                     .collect(Collectors.toCollection(FXCollections::observableArrayList));
-            tableview.setItems(usersList);
+            tableview.setItems(employeesList);
         } else {
-            tableview.setItems(FXCollections.observableArrayList(users));
+            tableview.setItems(FXCollections.observableArrayList(employees));
         }
     }
 
     @FXML
-    public void openDialogNewUser(ActionEvent event) throws IOException {
+    public void openDialogNewEmployee(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(rootDirectory + "dialog/new-user.fxml"));
         Parent root = loader.load();
         Dialog<String> dialog = new Dialog<>();
@@ -198,7 +198,7 @@ public class UserController implements Initializable {
         dialog.show();
     }
 
-    private void openEditDialogUser(ActionEvent event, User user) throws IOException {
+    private void openEditDialogEmployee(ActionEvent event, EmployeeEntity employee) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(rootDirectory + "dialog/edit-user.fxml"));
         Parent root = loader.load();
         Dialog<String> dialog = new Dialog<>();
@@ -210,7 +210,7 @@ public class UserController implements Initializable {
         EditUserController controller = loader.getController();
         controller.setDialog(dialog);
         controller.setTableView(tableview);
-        controller.setOldData(user);
+        controller.setOldData(employee);
         controller.setOldSort(Objects.requireNonNullElse(sortCombo.getValue(), ""));
         controller.setOldSearch(Objects.requireNonNullElse(textSearch.getText(), ""));
         stage.setOnCloseRequest(e -> {

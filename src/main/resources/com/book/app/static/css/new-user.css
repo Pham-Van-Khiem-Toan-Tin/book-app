@@ -37,7 +37,7 @@
     -fx-background-color: #fff;
     -fx-border-color: #ced4da;
     -fx-border-radius: 0.25em;
-    -fx-font-size: 16px;
+    -fx-font-size: 12px;
 }
 .input:focused {
     -fx-border-color: #80bdff;

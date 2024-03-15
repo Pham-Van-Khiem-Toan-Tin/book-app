@@ -1,11 +1,10 @@
 package com.book.app.Controller.admin;
 
-import com.book.app.Dao.impl.UserImpl;
-import com.book.app.Entity.User;
+import com.book.app.Dao.impl.EmployeeDaoImpl;
+import com.book.app.Entity.EmployeeEntity;
 import com.book.app.Utils.PasswordUtils;
 import com.book.app.Utils.SearchUtils;
 import com.book.app.Utils.SortUtils;
-import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -16,7 +15,6 @@ import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
 import java.util.ResourceBundle;
-import java.util.function.UnaryOperator;
 
 public class ResetPasswordController implements Initializable {
     @FXML
@@ -28,8 +26,8 @@ public class ResetPasswordController implements Initializable {
     private String oldSearch;
     private String oldSort;
     private Dialog<String> dialog;
-    private TableView<User> tableView;
-    private UserImpl dao = new UserImpl();
+    private TableView<EmployeeEntity> tableView;
+    private EmployeeDaoImpl dao = new EmployeeDaoImpl();
     public String getOldSearch() {
         return oldSearch;
     }
@@ -68,11 +66,11 @@ public class ResetPasswordController implements Initializable {
     public void setDialog(Dialog<String> dialog) {
         this.dialog = dialog;
     }
-    public TableView<User> getTableView() {
+    public TableView<EmployeeEntity> getTableView() {
         return tableView;
     }
 
-    public void setTableView(TableView<User> tableView) {
+    public void setTableView(TableView<EmployeeEntity> tableView) {
         this.tableView = tableView;
     }
     private boolean validateFields() {
