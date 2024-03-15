@@ -2,6 +2,7 @@ package com.book.app.Controller.admin;
 
 import com.book.app.Dao.impl.EmployeeDaoImpl;
 import com.book.app.Entity.EmployeeEntity;
+import com.book.app.Utils.AppUtils;
 import com.book.app.Utils.DateUtils;
 import com.book.app.Utils.SortUtils;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
@@ -16,11 +17,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
@@ -35,6 +38,8 @@ import java.util.stream.Collectors;
 
 public class UserController implements Initializable {
     private String rootDirectory = "/com/book/app/";
+    @FXML
+    private Text textWelcome, textUsername;
     @FXML
     private TableView<EmployeeEntity> tableview;
     @FXML
@@ -52,6 +57,8 @@ public class UserController implements Initializable {
     @FXML
     private TableColumn<EmployeeEntity, Void> actionCol;
     @FXML
+    private ChoiceBox<String> choiceBoxLogout;
+    @FXML
     private TextField textSearch;
     @FXML
     private Button btnSearch;
@@ -61,6 +68,19 @@ public class UserController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        textWelcome.setText("Hello, "+ AppUtils.getUsername());
+        textUsername.setText(AppUtils.getUsername());
+        choiceBoxLogout.getItems().add("Log out");
+        choiceBoxLogout.setOnAction(event -> {
+            if (choiceBoxLogout.getValue().equals("Log out")) {
+                AppUtils.clearData();
+                try {
+                    handleLogout(event);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
         idCol.setCellValueFactory(new PropertyValueFactory<EmployeeEntity, Integer>("id"));
         nameCol.setCellValueFactory(new PropertyValueFactory<EmployeeEntity, String>("username"));
         emailCol.setCellValueFactory(new PropertyValueFactory<EmployeeEntity, String>("email"));
@@ -246,5 +266,18 @@ public class UserController implements Initializable {
         });
         // Hiển thị dialog và đợi cho đến khi nó đóng
         dialog.show();
+    }
+    private void handleLogout(ActionEvent event) throws IOException {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(rootDirectory + "login/authen.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root, 1280, 800);
+            stage.setResizable(false);
+            stage.setScene(scene);
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -88,3 +88,7 @@
     -fx-border-color: #ccc; /* Border color of selected item */
     -fx-border-width: 1px; /* Border width of selected item */
 }
+.choice-box .list-cell:selected .text {
+    -fx-text-fill: transperent;
+}
+.choice-box.selected > .label { -fx-text-fill: transperent; }

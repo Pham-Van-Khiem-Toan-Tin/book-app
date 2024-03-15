@@ -2,6 +2,7 @@ package com.book.app.Controller;
 
 import com.book.app.Dao.impl.EmployeeDaoImpl;
 import com.book.app.Entity.EmployeeEntity;
+import com.book.app.Utils.AppUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -56,6 +57,8 @@ public class AuthenticationController implements Initializable {
         EmployeeEntity user = dao.login(inputNameLogin.getText().trim(), inputPasswordLogin.getText().trim());
         if (user != null) {
             String fxmFile, cssFile;
+            AppUtils.setRole(user.getAdmin() ? "admin" : "user");
+            AppUtils.setUsername(user.getUsername());
             fxmFile = root + (user.getAdmin() ? "admin/user-management.fxml": "home/home.fxml");
             cssFile = root + (user.getAdmin() ? "static/css/user-management.css": "static/css/home.css");
             try {

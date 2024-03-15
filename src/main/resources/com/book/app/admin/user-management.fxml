@@ -111,7 +111,7 @@
          <children>
             <Pane prefHeight="81.0" prefWidth="1094.0">
                <children>
-                  <Text layoutX="56.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: 700;" text="Hello, Lekan">
+                  <Text fx:id="textWelcome" layoutX="56.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: 700;" text="Hello, Lekan">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -125,12 +125,12 @@
                   <Pane layoutX="856.0" prefHeight="102.0" prefWidth="214.0">
                      <children>
                         <Circle fill="DODGERBLUE" layoutX="36.0" layoutY="40.0" radius="22.0" stroke="BLACK" strokeType="INSIDE" />
-                        <ChoiceBox layoutX="58.0" layoutY="15.0" prefHeight="51.0" prefWidth="137.0" style="-fx-background-color: transperent;">
+                        <ChoiceBox fx:id="choiceBoxLogout" layoutX="58.0" layoutY="15.0" prefHeight="51.0" prefWidth="137.0" style="-fx-background-color: transperent;">
                            <cursor>
                               <Cursor fx:constant="HAND" />
                            </cursor>
                         </ChoiceBox>
-                        <Text layoutX="70.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: 700;" text="LeKan Okeowo">
+                        <Text fx:id="textUsername" layoutX="70.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: 700;" text="LeKan Okeowo">
                            <font>
                               <Font size="14.0" />
                            </font>

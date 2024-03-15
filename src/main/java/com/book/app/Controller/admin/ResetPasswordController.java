@@ -93,8 +93,14 @@ public class ResetPasswordController implements Initializable {
             return true;
         }
     }
+    private boolean checkComparePassword() {
+        if (validateFields()) {
+            return newPassword.getText().trim().equals(confirmPassword.getText().trim());
+        }
+        return false;
+    }
     private void checkFields() throws NoSuchAlgorithmException {
-        submitBtn.setDisable(!checkOldData() || !validateFields());
+        submitBtn.setDisable(!checkOldData() || !validateFields() || checkComparePassword());
     }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
