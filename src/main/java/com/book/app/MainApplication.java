@@ -11,9 +11,9 @@ public class MainApplication extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("login/authen.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("admin/user-management.fxml"));
             Scene scene = new Scene(fxmlLoader.load(), 1280, 800);
-            scene.getStylesheets().add(getClass().getResource("static/css/authentication.css").toExternalForm());
+            scene.getStylesheets().add(getClass().getResource("static/css/user-management.css").toExternalForm());
             primaryStage.setResizable(false);
             primaryStage.setScene(scene);
             primaryStage.setTitle("Overlay Example");
