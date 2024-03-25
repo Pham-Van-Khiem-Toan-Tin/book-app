@@ -2,6 +2,7 @@ package com.book.app.Controller;
 
 import com.book.app.MainApplication;
 import com.book.app.Utils.AppUtils;
+import com.book.app.Utils.UIUtils;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -53,7 +54,7 @@ public class HomeController implements Initializable {
     @FXML
     private Circle author1, author2, author3;
     @FXML
-    private Button logout;
+    private Button logout, btnCategory, btnAuthor;
     private int currentIndex = 0;
     private int currentIndexHot = 0;
 
@@ -230,9 +231,24 @@ public class HomeController implements Initializable {
         logout.setOnAction(event -> {
             try {
                 AppUtils.clearData();
-                handleLogout(event);
+                handleSwitchOtherScene(event, "login/authen.fxml", null );
             } catch (IOException e) {
                 throw new RuntimeException(e);
+            }
+        });
+        btnCategory.setOnAction(event -> {
+            try {
+                handleSwitchOtherScene(event, "category/category.fxml", "static/css/category/category.css");
+            } catch (Exception e) {
+                throw new RuntimeException();
+            }
+        });
+        btnAuthor.setOnAction(event -> {
+            try {
+                UIUtils.handleSwitchOtherScene(event, "author/authors.fxml", null);
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw  new RuntimeException();
             }
         });
     }
@@ -275,12 +291,15 @@ public class HomeController implements Initializable {
             transition.play();
         }
     }
-    private void handleLogout(ActionEvent event) throws IOException {
+    private void handleSwitchOtherScene(ActionEvent event, String directoryClass, String directoryCss) throws IOException {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(rootDirectory + "login/authen.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(rootDirectory  + directoryClass));
             Parent root = loader.load();
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             Scene scene = new Scene(root, 1280, 800);
+            if (directoryCss != null) {
+                scene.getStylesheets().add(getClass().getResource(rootDirectory + directoryCss).toExternalForm());
+            }
             stage.setResizable(false);
             stage.setScene(scene);
             stage.show();
@@ -288,4 +307,5 @@ public class HomeController implements Initializable {
             e.printStackTrace();
         }
     }
+
 }

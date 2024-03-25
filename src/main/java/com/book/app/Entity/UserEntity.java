@@ -1,9 +1,8 @@
 package com.book.app.Entity;
 
-import java.sql.Date;
 import java.time.LocalDate;
 
-public class User {
+public class UserEntity {
     private int id;
     private String email;
     private String phone;

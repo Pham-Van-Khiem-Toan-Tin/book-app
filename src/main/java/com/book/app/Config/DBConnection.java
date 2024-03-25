@@ -1,4 +1,4 @@
-package com.book.app.Dao;
+package com.book.app.Config;
 
 import java.sql.*;
 
@@ -22,9 +22,11 @@ public class DBConnection {
         return connection;
     }
 
-    public void initPrepar(String sql) {
+    public void initPrepar(String sql) throws SQLException {
         try {
-            getConnection();
+            if (connection == null || connection.isClosed()) {
+                getConnection();
+            }
             preparedStatement = connection.prepareStatement(sql);
 
         } catch (SQLException e) {

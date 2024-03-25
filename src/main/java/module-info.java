@@ -9,6 +9,12 @@ module com.book.app {
     exports com.book.app.Controller;
     opens com.book.app.Controller to javafx.fxml;
     opens com.book.app.Entity to javafx.base;
+//  admin
     exports com.book.app.Controller.admin;
     opens com.book.app.Controller.admin to javafx.fxml;
+//  employee
+    exports com.book.app.Controller.employee.author;
+    opens com.book.app.Controller.employee.author to javafx.fxml;
+    exports com.book.app.Controller.employee.category;
+    opens com.book.app.Controller.employee.category to javafx.fxml;
 }

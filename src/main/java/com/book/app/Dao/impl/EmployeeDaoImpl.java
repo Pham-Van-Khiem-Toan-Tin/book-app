@@ -1,6 +1,6 @@
 package com.book.app.Dao.impl;
 
-import com.book.app.Dao.DBConnection;
+import com.book.app.Config.DBConnection;
 import com.book.app.Dao.IEmployeeDao;
 import com.book.app.Entity.EmployeeEntity;
 import com.book.app.Utils.PasswordUtils;
