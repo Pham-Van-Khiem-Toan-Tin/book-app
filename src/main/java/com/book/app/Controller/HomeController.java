@@ -2,6 +2,7 @@ package com.book.app.Controller;
 
 import com.book.app.MainApplication;
 import com.book.app.Utils.AppUtils;
+import com.book.app.Utils.TokenUtil;
 import com.book.app.Utils.UIUtils;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
@@ -231,6 +232,7 @@ public class HomeController implements Initializable {
         logout.setOnAction(event -> {
             try {
                 AppUtils.clearData();
+                TokenUtil.deleteToken();
                 handleSwitchOtherScene(event, "login/authen.fxml", null );
             } catch (IOException e) {
                 throw new RuntimeException(e);

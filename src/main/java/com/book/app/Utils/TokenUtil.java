@@ -5,6 +5,7 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -18,7 +19,8 @@ public class TokenUtil {
     private static final String SECRET_KEY = "your_secret_key_here";
 
     public static Key generateKey() throws Exception {
-        byte[] keyValue = SECRET_KEY.getBytes();
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] keyValue = digest.digest(SECRET_KEY.getBytes(StandardCharsets.UTF_8));
         Key key = new SecretKeySpec(keyValue, ALGORITHM);
         return key;
     }
@@ -56,9 +58,34 @@ public class TokenUtil {
         try (FileInputStream fis = new FileInputStream("application.properties")) {
             props.load(fis);
             return props.getProperty("token");
+        } catch (FileNotFoundException e) {
+            // Xử lý trường hợp không tìm thấy tệp tin
+            System.err.println("File 'application.properties' not found.");
         } catch (IOException e) {
+            // Xử lý các lỗi khác trong quá trình đọc tệp tin
             e.printStackTrace();
-            return null;
+        }
+        return null; // Trả về null khi không có giá trị token hoặc có lỗi xảy ra
+    }
+    public static void deleteToken() {
+        try {
+            // Đọc tệp application.properties
+            Properties props = new Properties();
+            FileInputStream fis = new FileInputStream("application.properties");
+            props.load(fis);
+            fis.close();
+
+            // Xóa chỉ mục "token"
+            props.remove("token");
+
+            // Ghi lại vào tệp application.properties
+            FileOutputStream fos = new FileOutputStream("application.properties");
+            props.store(fos, null);
+            fos.close();
+
+            System.out.println("Token deleted successfully.");
+        } catch (IOException e) {
+            System.err.println("Error deleting token: " + e.getMessage());
         }
     }
 }

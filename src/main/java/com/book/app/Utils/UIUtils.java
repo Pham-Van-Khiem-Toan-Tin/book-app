@@ -84,6 +84,7 @@ public class UIUtils {
     }
     private static void handleLogout(ActionEvent event) throws IOException {
         try {
+            TokenUtil.deleteToken();
             FXMLLoader loader = new FXMLLoader(UIUtils.class.getResource(rootDirectory + "login/authen.fxml"));
             Parent root = loader.load();
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
