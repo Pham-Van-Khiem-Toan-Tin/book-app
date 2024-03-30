@@ -54,7 +54,7 @@ public class HomeController implements Initializable {
     @FXML
     private Circle author1, author2, author3;
     @FXML
-    private Button logout, btnCategory, btnAuthor;
+    private Button logout, btnCategory, btnAuthor, btnPublisher;
     private int currentIndex = 0;
     private int currentIndexHot = 0;
 
@@ -245,7 +245,15 @@ public class HomeController implements Initializable {
         });
         btnAuthor.setOnAction(event -> {
             try {
-                UIUtils.handleSwitchOtherScene(event, "author/authors.fxml", null);
+                UIUtils.handleSwitchOtherScene(event, "author/authors.fxml", "static/css/author/authors.css");
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw  new RuntimeException();
+            }
+        });
+        btnPublisher.setOnAction(event -> {
+            try {
+                UIUtils.handleSwitchOtherScene(event, "publisher/publisher.fxml", "static/css/publisher/publisher.css");
             } catch (Exception e) {
                 e.printStackTrace();
                 throw  new RuntimeException();

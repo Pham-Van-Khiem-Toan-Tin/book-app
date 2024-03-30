@@ -1,8 +1,6 @@
 package com.book.app.Entity;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 public class BaseEntity {
     private String name;

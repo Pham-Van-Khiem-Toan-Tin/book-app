@@ -1,6 +1,6 @@
 package com.book.app.Entity;
 
-public class CategoryEntity extends BaseEntity{
+public class PublisherEntity extends BaseEntity {
     private String id;
 
     public String getId() {

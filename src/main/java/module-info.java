@@ -3,6 +3,8 @@ module com.book.app {
     requires javafx.fxml;
     requires java.sql;
     requires de.jensd.fx.glyphs.fontawesome;
+    requires cloudinary.core;
+    requires dotenv.java;
 
     opens com.book.app to javafx.fxml;
     exports com.book.app;
@@ -17,4 +19,6 @@ module com.book.app {
     opens com.book.app.Controller.employee.author to javafx.fxml;
     exports com.book.app.Controller.employee.category;
     opens com.book.app.Controller.employee.category to javafx.fxml;
+    exports com.book.app.Controller.employee.publisher;
+    opens com.book.app.Controller.employee.publisher to javafx.fxml;
 }

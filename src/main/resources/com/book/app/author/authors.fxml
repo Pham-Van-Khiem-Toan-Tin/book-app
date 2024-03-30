@@ -33,9 +33,9 @@
                             </image>
                         </ImageView>
                     </children></Pane>
-                <Button alignment="BASELINE_LEFT" ellipsisString="" mnemonicParsing="false" prefHeight="48.0" prefWidth="239.0" style="-fx-background-color: transperent; -fx-graphic-text-gap: 15px; -fx-font-weight: 700;" text="User" textFill="#7d7d7d">
+                <Button fx:id="btnHome" alignment="BASELINE_LEFT" ellipsisString="" mnemonicParsing="false" prefHeight="48.0" prefWidth="239.0" style="-fx-background-color: transperent; -fx-graphic-text-gap: 15px; -fx-font-weight: 700;" text="Home" textFill="#7d7d7d">
                     <graphic>
-                        <FontAwesomeIconView fill="#7d7d7d" glyphName="USER" style="-glyph-size: 20px;" />
+                        <FontAwesomeIconView fill="#7d7d7d" glyphName="HOME" style="-glyph-size: 20px;" />
                     </graphic>
                     <font>
                         <Font name="Segoe UI Bold" size="13.0" />
@@ -47,7 +47,7 @@
                         <Cursor fx:constant="HAND" />
                     </cursor>
                 </Button>
-                <Button alignment="BASELINE_LEFT" ellipsisString="" mnemonicParsing="false" prefHeight="48.0" prefWidth="239.0" style="-fx-background-color: transperent; -fx-graphic-text-gap: 15px; -fx-font-weight: 700;" text="Book" textFill="#7d7d7d">
+                <Button fx:id="btnBook" alignment="BASELINE_LEFT" ellipsisString="" mnemonicParsing="false" prefHeight="48.0" prefWidth="239.0" style="-fx-background-color: transperent; -fx-graphic-text-gap: 15px; -fx-font-weight: 700;" text="Book" textFill="#7d7d7d">
                     <graphic>
                         <FontAwesomeIconView fill="#7d7d7d" glyphName="BOOK" style="-glyph-size: 20px;" />
                     </graphic>
@@ -61,9 +61,9 @@
                         <Cursor fx:constant="HAND" />
                     </cursor>
                 </Button>
-                <Button alignment="BASELINE_LEFT" ellipsisString="" mnemonicParsing="false" prefHeight="48.0" prefWidth="239.0" style="-fx-background-color: transperent; -fx-graphic-text-gap: 15px; -fx-font-weight: 700;" text="Category" textFill="#7d7d7d">
+                <Button fx:id="btnCategory" alignment="BASELINE_LEFT" ellipsisString="" mnemonicParsing="false" prefHeight="48.0" prefWidth="239.0" style="-fx-background-color: transperent; -fx-graphic-text-gap: 15px; -fx-font-weight: 700;" text="Category" textFill="#7d7d7d">
                     <graphic>
-                        <FontAwesomeIconView fill="#7d7d7d" glyphName="CLIPBOARD" style="-glyph-size: 20px;" />
+                        <FontAwesomeIconView fill="#7d7d7d" glyphName="TH_LIST" style="-glyph-size: 20px;" />
                     </graphic>
                     <font>
                         <Font name="Segoe UI" size="13.0" />
@@ -75,7 +75,7 @@
                         <Cursor fx:constant="HAND" />
                     </cursor>
                 </Button>
-                <Button alignment="BASELINE_LEFT" ellipsisString="" mnemonicParsing="false" prefHeight="48.0" prefWidth="239.0" style="-fx-background-color: transperent; -fx-graphic-text-gap: 15px; -fx-font-weight: 700;" text="Author" textFill="#4a85f6">
+                <Button fx:id="btnAuthor" alignment="BASELINE_LEFT" ellipsisString="" mnemonicParsing="false" prefHeight="48.0" prefWidth="239.0" style="-fx-background-color: transperent; -fx-graphic-text-gap: 15px; -fx-font-weight: 700;" text="Author" textFill="#4a85f6">
                     <graphic>
                         <FontAwesomeIconView fill="#4a85f6" glyphName="USERS" style="-glyph-size: 20px;" />
                     </graphic>
@@ -89,9 +89,9 @@
                         <Cursor fx:constant="HAND" />
                     </cursor>
                 </Button>
-                <Button alignment="BASELINE_LEFT" ellipsisString="" mnemonicParsing="false" prefHeight="48.0" prefWidth="239.0" style="-fx-background-color: transperent; -fx-graphic-text-gap: 15px; -fx-font-weight: 700;" text="Employee" textFill="#7d7d7d">
+                <Button fx:id="btnPublisher" alignment="BASELINE_LEFT" ellipsisString="" mnemonicParsing="false" prefHeight="48.0" prefWidth="239.0" style="-fx-background-color: transperent; -fx-graphic-text-gap: 15px; -fx-font-weight: 700;" text="Publisher" textFill="#7d7d7d">
                     <graphic>
-                        <FontAwesomeIconView fill="#7d7d7d" glyphName="USER_SECRET" style="-glyph-size: 20px;" />
+                        <FontAwesomeIconView fill="#7d7d7d" glyphName="INBOX" style="-glyph-size: 20px;" />
                     </graphic>
                     <font>
                         <Font name="Segoe UI" size="13.0" />
@@ -103,6 +103,34 @@
                         <Cursor fx:constant="HAND" />
                     </cursor>
                 </Button>
+            <Button alignment="BASELINE_LEFT" ellipsisString="" mnemonicParsing="false" prefHeight="48.0" prefWidth="239.0" style="-fx-background-color: transperent; -fx-graphic-text-gap: 15px; -fx-font-weight: 700;" text="Inventory" textFill="#7d7d7d">
+               <graphic>
+                  <FontAwesomeIconView fill="#7d7d7d" glyphName="FOLDER_OPEN" style="-glyph-size: 20px;" />
+               </graphic>
+               <font>
+                  <Font name="Segoe UI" size="13.0" />
+               </font>
+               <padding>
+                  <Insets left="40.0" />
+               </padding>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button alignment="BASELINE_LEFT" ellipsisString="" mnemonicParsing="false" prefHeight="48.0" prefWidth="239.0" style="-fx-background-color: transperent; -fx-graphic-text-gap: 15px; -fx-font-weight: 700;" text="Order" textFill="#7d7d7d">
+               <graphic>
+                  <FontAwesomeIconView fill="#7d7d7d" glyphName="BRIEFCASE" style="-glyph-size: 20px;" />
+               </graphic>
+               <font>
+                  <Font name="Segoe UI" size="13.0" />
+               </font>
+               <padding>
+                  <Insets left="40.0" />
+               </padding>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
             </children>
         </VBox>
     </left>
@@ -197,8 +225,8 @@
                             <columns>
                                 <TableColumn fx:id="idCol" editable="false" prefWidth="103.0" resizable="false" sortable="false" text="id" />
                                 <TableColumn fx:id="imageCol" editable="false" prefWidth="118.0" resizable="false" sortable="false" text="Image" />
-                                <TableColumn fx:id="nameCol" editable="false" prefWidth="229.0" resizable="false" sortable="false" text="Name" />
-                                <TableColumn fx:id="desCol" editable="false" prefWidth="247.0" resizable="false" sortable="false" text="Description" />
+                                <TableColumn fx:id="nameCol" editable="false" prefWidth="125.0" resizable="false" sortable="false" text="Name" />
+                                <TableColumn fx:id="desCol" editable="false" prefWidth="351.0" resizable="false" sortable="false" text="Description" />
                                 <TableColumn fx:id="createdCol" editable="false" prefWidth="232.0" resizable="false" sortable="false" text="Create At" />
                                 <TableColumn fx:id="actionCol" editable="false" prefWidth="119.0" resizable="false" sortable="false" text="Action" />
                             </columns>

@@ -1,7 +1,8 @@
-package com.book.app.Controller.employee.category;
+package com.book.app.Controller.employee.publisher;
 
-import com.book.app.Dao.impl.CategoryDaoImpl;
-import com.book.app.Entity.CategoryEntity;
+import com.book.app.Dao.impl.PublisherDaoImpl;
+import com.book.app.Dao.impl.PublisherDaoImpl;
+import com.book.app.Entity.PublisherEntity;
 import com.book.app.Utils.DateUtils;
 import com.book.app.Utils.UIUtils;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
@@ -28,7 +29,7 @@ import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-public class CategoryController implements Initializable {
+public class PublisherController implements Initializable {
     private String rootDirectory = "/com/book/app/";
     @FXML
     Text textWelcome, textUsername;
@@ -37,45 +38,45 @@ public class CategoryController implements Initializable {
     @FXML
     ComboBox<String> sortCombo;
     @FXML
-    private TableView<CategoryEntity> tableview;
+    private TableView<PublisherEntity> tableview;
     @FXML
-    private TableColumn<CategoryEntity, String> nameCol;
+    private TableColumn<PublisherEntity, String> nameCol;
     @FXML
-    private TableColumn<CategoryEntity, String> desCol;
+    private TableColumn<PublisherEntity, String> desCol;
     @FXML
-    private TableColumn<CategoryEntity, String> idCol;
+    private TableColumn<PublisherEntity, String> idCol;
     @FXML
-    private TableColumn<CategoryEntity, String> createdCol;
+    private TableColumn<PublisherEntity, String> createdCol;
     @FXML
-    private TableColumn<CategoryEntity, Void> actionCol;
+    private TableColumn<PublisherEntity, Void> actionCol;
     @FXML
     private ChoiceBox<String> choiceBoxLogout;
     @FXML
-    private Button newCategory, btnSearch, btnAuthor, btnCategory, btnPublisher, btnHome;
+    private Button newPublisher, btnSearch, btnAuthor, btnCategory, btnPublisher, btnHome;
 
     private Parent root;
-    private CategoryDaoImpl dao = new CategoryDaoImpl();
+    private PublisherDaoImpl dao = new PublisherDaoImpl();
 
-    private void updateCategoryList() {
+    private void updatePublisherList() {
         String sortType = sortCombo.getValue();
         String keyword = null;
         if (textSearch.getText() != null) {
             keyword = textSearch.getText().trim();
         }
-        tableview.setItems(FXCollections.observableArrayList(dao.getAllCategory(keyword, sortType)));
+        tableview.setItems(FXCollections.observableArrayList(dao.getAllPublisher(keyword, sortType)));
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         UIUtils.setupUIElements(textWelcome, textUsername, choiceBoxLogout);
         UIUtils.setupMenuEmployee(btnAuthor, btnCategory, btnPublisher, btnHome);
-        idCol.setCellValueFactory(new PropertyValueFactory<CategoryEntity, String>("id"));
-        nameCol.setCellValueFactory(new PropertyValueFactory<CategoryEntity, String>("name"));
-        desCol.setCellValueFactory(new PropertyValueFactory<CategoryEntity, String>("description"));
-        createdCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<CategoryEntity, String>, ObservableValue<String>>() {
+        idCol.setCellValueFactory(new PropertyValueFactory<PublisherEntity, String>("id"));
+        nameCol.setCellValueFactory(new PropertyValueFactory<PublisherEntity, String>("name"));
+        desCol.setCellValueFactory(new PropertyValueFactory<PublisherEntity, String>("description"));
+        createdCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<PublisherEntity, String>, ObservableValue<String>>() {
             @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<CategoryEntity, String> param) {
-                CategoryEntity author = param.getValue();
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<PublisherEntity, String> param) {
+                PublisherEntity author = param.getValue();
                 if (author != null) {
                     String created_at = DateUtils.convertLocalDateTimeToStringPattern(author.getCreated_at(), "HH:mm:ss dd-MM-yyyy");
                     return new SimpleStringProperty(created_at);
@@ -85,7 +86,7 @@ public class CategoryController implements Initializable {
 
 
         });
-        actionCol.setCellFactory(param -> new TableCell<CategoryEntity, Void>() {
+        actionCol.setCellFactory(param -> new TableCell<PublisherEntity, Void>() {
             private final Button editButton = new Button();
             private final Button lockButton = new Button();
             private final HBox pane = new HBox(editButton, lockButton);
@@ -99,16 +100,16 @@ public class CategoryController implements Initializable {
                 editButton.setGraphic(editIcon);
                 editButton.setOnAction(event -> {
                     try {
-                        CategoryEntity author = getTableView().getItems().get(getIndex());
-                        openDialogEditCategory(event, author);
+                        PublisherEntity author = getTableView().getItems().get(getIndex());
+                        openDialogEditPublisher(event, author);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
                 });
                 lockButton.setOnAction(event -> {
-                    CategoryEntity category = getTableView().getItems().get(getIndex());
-                    dao.lockOrUnLockCategory(category.getId(), !category.getEnable());
-                    updateCategoryList();
+                    PublisherEntity publisher = getTableView().getItems().get(getIndex());
+                    dao.lockOrUnLockPublisher(publisher.getId(), !publisher.getEnable());
+                    updatePublisherList();
                 });
 
             }
@@ -119,7 +120,7 @@ public class CategoryController implements Initializable {
                 if (empty) {
                     setGraphic(null);
                 } else {
-                    CategoryEntity author = getTableView().getItems().get(getIndex());
+                    PublisherEntity author = getTableView().getItems().get(getIndex());
                     if (author != null) {
                         FontAwesomeIconView lockIcon = new FontAwesomeIconView(author.getEnable() ? FontAwesomeIcon.LOCK : FontAwesomeIcon.UNLOCK);
                         lockButton.setGraphic(lockIcon);
@@ -128,9 +129,9 @@ public class CategoryController implements Initializable {
                 }
             }
         });
-        newCategory.setOnAction(event -> {
+        newPublisher.setOnAction(event -> {
             try {
-                openDialogNewCategory(event);
+                openDialogNewPublisher(event);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -141,21 +142,21 @@ public class CategoryController implements Initializable {
             if (textSearch.getText() != null) {
                 keyword = textSearch.getText().trim();
             }
-            tableview.setItems(FXCollections.observableArrayList(dao.getAllCategory(keyword, sortType)));
+            tableview.setItems(FXCollections.observableArrayList(dao.getAllPublisher(keyword, sortType)));
         });
-        tableview.setItems(FXCollections.observableArrayList(dao.getAllCategory(null, null)));
+        tableview.setItems(FXCollections.observableArrayList(dao.getAllPublisher(null, null)));
     }
 
-    public void openDialogEditCategory(ActionEvent event, CategoryEntity category) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(rootDirectory + "dialog/category/edit-category.fxml"));
+    public void openDialogEditPublisher(ActionEvent event, PublisherEntity category) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(rootDirectory + "dialog/publisher/edit-publisher.fxml"));
         root = loader.load();
         Dialog<String> dialog = new Dialog<>();
         dialog.getDialogPane().setContent(root);
         dialog.setResizable(false);
         Scene dialogScene = dialog.getDialogPane().getScene();
-        dialogScene.getStylesheets().add(getClass().getResource(rootDirectory + "static/css/category/edit-category.css").toExternalForm());
+        dialogScene.getStylesheets().add(getClass().getResource(rootDirectory + "static/css/publisher/edit-publisher.css").toExternalForm());
         Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
-        EditCategoryController controller = loader.getController();
+        EditPublisherController controller = loader.getController();
         controller.setStage(stage);
         controller.setTableView(tableview);
         controller.setDialog(dialog);
@@ -169,16 +170,16 @@ public class CategoryController implements Initializable {
         // Hiển thị dialog và đợi cho đến khi nó đóng
         dialog.show();
     }
-    public void openDialogNewCategory(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(rootDirectory + "dialog/category/new-category.fxml"));
+    public void openDialogNewPublisher(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(rootDirectory + "dialog/publisher/new-publisher.fxml"));
         root = loader.load();
         Dialog<String> dialog = new Dialog<>();
         dialog.getDialogPane().setContent(root);
         dialog.setResizable(false);
         Scene dialogScene = dialog.getDialogPane().getScene();
-        dialogScene.getStylesheets().add(getClass().getResource(rootDirectory + "static/css/category/new-category.css").toExternalForm());
+        dialogScene.getStylesheets().add(getClass().getResource(rootDirectory + "static/css/publisher/new-publisher.css").toExternalForm());
         Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
-        NewCategoryController controller = loader.getController();
+        NewPublisherController controller = loader.getController();
         controller.setStage(stage);
         controller.setTableView(tableview);
         controller.setDialog(dialog);

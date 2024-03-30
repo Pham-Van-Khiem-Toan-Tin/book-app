@@ -1,5 +1,7 @@
 package com.book.app.Config;
 
+import io.github.cdimascio.dotenv.Dotenv;
+
 import java.sql.*;
 
 public class DBConnection {
@@ -9,9 +11,10 @@ public class DBConnection {
     private int ok;
 
     public Connection getConnection() {
-        String url = "jdbc:mysql://localhost:3306/bookstore";
-        String user = "root";
-        String password = "271201";
+        Dotenv dotenv = Dotenv.load();
+        String url = dotenv.get("DATABASE_URL");
+        String user = dotenv.get("DATABASE_USER");
+        String password = dotenv.get("DATABASE_PASSWORD");
         try {
             Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(url, user, password);

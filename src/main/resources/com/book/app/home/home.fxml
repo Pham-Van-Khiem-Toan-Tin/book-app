@@ -243,7 +243,7 @@
             </Pane>
             <BorderPane prefHeight="519.0" prefWidth="202.0">
                <top>
-                  <VBox prefHeight="253.0" prefWidth="202.0" BorderPane.alignment="CENTER">
+                  <VBox prefHeight="342.0" prefWidth="202.0" BorderPane.alignment="CENTER">
                      <children>
                         <Button alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="53.0" prefWidth="202.0" style="-fx-background-color: transperent;" text="Books">
                            <graphic>
@@ -276,6 +276,20 @@
                         <Button fx:id="btnAuthor" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="53.0" prefWidth="202.0" style="-fx-background-color: transperent;" text="Author">
                            <graphic>
                               <FontAwesomeIconView glyphName="BOOKMARK" text="" />
+                           </graphic>
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                           <padding>
+                              <Insets left="50.0" />
+                           </padding>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Button>
+                        <Button fx:id="btnPublisher" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="53.0" prefWidth="202.0" style="-fx-background-color: transperent;" text="Publisher">
+                           <graphic>
+                              <FontAwesomeIconView glyphName="INBOX" text="" />
                            </graphic>
                            <font>
                               <Font name="System Bold" size="14.0" />

@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -29,6 +30,37 @@ public class UIUtils {
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
+            }
+        });
+    }
+    public  static void setupMenuEmployee(Button btnAuthor, Button btnCategory, Button btnPublisher, Button btnHome) {
+        btnAuthor.setOnAction(event -> {
+            try {
+                handleSwitchOtherScene(event, "author/authors.fxml", "static/css/author/authors.css");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        btnPublisher.setOnAction(event -> {
+            try {
+                handleSwitchOtherScene(event, "publisher/publisher.fxml", "static/css/publisher/publisher.css");
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw  new RuntimeException();
+            }
+        });
+        btnCategory.setOnAction(event -> {
+            try {
+                handleSwitchOtherScene(event, "category/category.fxml", "static/css/category/category.css");
+            } catch (Exception e) {
+                throw new RuntimeException();
+            }
+        });
+        btnHome.setOnAction(event -> {
+            try {
+                handleSwitchOtherScene(event, "home/home.fxml", "static/css/home.css");
+            } catch (Exception e) {
+                throw new RuntimeException();
             }
         });
     }

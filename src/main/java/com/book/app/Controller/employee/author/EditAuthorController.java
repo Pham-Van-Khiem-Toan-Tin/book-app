@@ -4,9 +4,6 @@ import com.book.app.Config.ImageUploader;
 import com.book.app.DTO.CloudinaryForm;
 import com.book.app.Dao.impl.AuthorDaoImpl;
 import com.book.app.Entity.AuthorEntity;
-import com.book.app.Utils.SearchUtils;
-import com.book.app.Utils.SortUtils;
-import com.book.app.Utils.UUIDUtils;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -25,9 +22,10 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
-public class NewAuthorController implements Initializable {
+public class EditAuthorController implements Initializable {
     @FXML
     Button btnImage, submitButton, cancel;
     @FXML
@@ -42,8 +40,9 @@ public class NewAuthorController implements Initializable {
     private Dialog<String> dialog;
     private Stage stage;
     private File selectedFile;
-    private CloudinaryForm imageAuthor;
+    private CloudinaryForm imageAuthor = new CloudinaryForm();
     private TableView<AuthorEntity> tableView;
+    private AuthorEntity oldData;
     private AuthorDaoImpl dao = new AuthorDaoImpl();
 
     public CloudinaryForm getImageAuthor() {
@@ -97,15 +96,42 @@ public class NewAuthorController implements Initializable {
     public void setTableView(TableView<AuthorEntity> tableView) {
         this.tableView = tableView;
     }
+
+    public AuthorEntity getOldData() {
+        return oldData;
+    }
+
+    public void setOldData(AuthorEntity oldData) {
+        this.oldData = oldData;
+        this.imageAuthor.setUrl(this.oldData.getImage_url());
+        this.imageAuthor.setPublic_id(this.oldData.getImage_public_id());
+        authorName.setText(this.oldData.getName());
+        description.setText(this.oldData.getDescription());
+        nameFile.setText("Old Image");
+        imagePreview.setImage(new Image(this.oldData.getImage_url()));
+    }
+
     private boolean validateFields() {
         return authorName.getText() != null && !authorName.getText().trim().isEmpty() &&
                 description.getText() != null && !description.getText().trim().isEmpty() &&
-                selectedFile != null;
+                (nameFile.getText().equals("Old Image") || selectedFile != null);
     }
+    private boolean checkOldData() {
+        if (!Objects.isNull(oldData)) {
+            String newAuthorName = Objects.requireNonNullElse(authorName.getText(), "");
+            String newDescription = Objects.requireNonNullElse(description.getText(), "");
+            String nameImage = nameFile.getText();
+            boolean authorNameSameAsOldData = newAuthorName.trim().equals(oldData.getName());
+            boolean descriptionSameAsOldData = newDescription.trim().equals(oldData.getDescription());
+            boolean oldImage = nameImage.equals("Old Image");
+            return !(authorNameSameAsOldData && descriptionSameAsOldData && oldImage);
+        } else {
+            return true;
+        }
+    };
     private void checkFields() {
-        submitButton.setDisable(!validateFields());
+        submitButton.setDisable(!checkOldData() || !validateFields());
     }
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         btnImage.setOnAction(event -> {
@@ -131,28 +157,32 @@ public class NewAuthorController implements Initializable {
         });
         authorName.textProperty().addListener((observable, oldValue, newValue) -> checkFields());
         description.textProperty().addListener((observable, oldValue, newValue) -> checkFields());
-
     }
-
     public void submit(ActionEvent event) throws IOException {
         String name = authorName.getText().trim();
         String descriptionText = description.getText().trim();
         AuthorEntity author = new AuthorEntity();
-        author.setId(UUIDUtils.generateUniqueId(name));
+        author.setId(this.oldData.getId());
         author.setName(name);
         author.setDescription(descriptionText);
-        try {
-            ImageUploader imageUploader = new ImageUploader();
-            CloudinaryForm uploadResult = imageUploader.uploadImage(getSelectedFile(), "author");
-            setImageAuthor(uploadResult);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        if(selectedFile != null) {
+            try {
+                ImageUploader imageUploader = new ImageUploader();
+                String resultDestroy = imageUploader.destroyImage(this.oldData.getImage_public_id());
+                if (resultDestroy.equals("deleted!")) {
+                    CloudinaryForm uploadResult = imageUploader.uploadImage(getSelectedFile(), "author");
+                    setImageAuthor(uploadResult);
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         }
         author.setImage_url(imageAuthor.getUrl());
         author.setImage_public_id(imageAuthor.getPublic_id());
-        author.setEnable(true);
-        author.setCreated_at(LocalDateTime.now());
-        boolean result = dao.addAuthor(author);
+        author.setUpdated_at(LocalDateTime.now());
+        boolean result = dao.editAuthor(author);
         if (result) {
             this.dialog.setResult("successfully");
             this.dialog.close();
