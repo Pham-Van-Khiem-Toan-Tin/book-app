@@ -20,7 +20,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.book.app.Controller.employee.category.CategoryController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.book.app.Controller.employee.book.BookController">
     <left>
         <VBox prefHeight="800.0" prefWidth="186.0" style="-fx-background-color: #fff;" BorderPane.alignment="CENTER">
             <children>
@@ -46,9 +46,9 @@
                         <Cursor fx:constant="HAND" />
                     </cursor>
                 </Button>
-                <Button fx:id="btnBook" alignment="BASELINE_LEFT" ellipsisString="" mnemonicParsing="false" prefHeight="48.0" prefWidth="239.0" style="-fx-background-color: transperent; -fx-graphic-text-gap: 15px; -fx-font-weight: 700;" text="Book" textFill="#7d7d7d">
+                <Button fx:id="btnBook" alignment="BASELINE_LEFT" ellipsisString="" mnemonicParsing="false" prefHeight="48.0" prefWidth="239.0" style="-fx-background-color: transperent; -fx-graphic-text-gap: 15px; -fx-font-weight: 700;" text="Book" textFill="#4a85f6">
                     <graphic>
-                        <FontAwesomeIconView fill="#7d7d7d" glyphName="BOOK" style="-glyph-size: 20px;" />
+                        <FontAwesomeIconView fill="#4a85f6" glyphName="BOOK" style="-glyph-size: 20px;" />
                     </graphic>
                     <font>
                         <Font name="Segoe UI" size="13.0" />
@@ -60,9 +60,9 @@
                         <Cursor fx:constant="HAND" />
                     </cursor>
                 </Button>
-                <Button fx:id="btnCategory" alignment="BASELINE_LEFT" ellipsisString="" mnemonicParsing="false" prefHeight="48.0" prefWidth="239.0" style="-fx-background-color: transperent; -fx-graphic-text-gap: 15px; -fx-font-weight: 700;" text="Category" textFill="#4a85f6">
+                <Button fx:id="btnCategory" alignment="BASELINE_LEFT" ellipsisString="" mnemonicParsing="false" prefHeight="48.0" prefWidth="239.0" style="-fx-background-color: transperent; -fx-graphic-text-gap: 15px; -fx-font-weight: 700;" text="Category" textFill="#7d7d7d">
                     <graphic>
-                        <FontAwesomeIconView fill="#4a85f6" glyphName="TH_LIST" style="-glyph-size: 20px;" />
+                        <FontAwesomeIconView fill="#7d7d7d" glyphName="TH_LIST" style="-glyph-size: 20px;" />
                     </graphic>
                     <font>
                         <Font name="Segoe UI" size="13.0" />
@@ -151,7 +151,8 @@
                         </FontAwesomeIconView>
                         <Pane layoutX="856.0" prefHeight="102.0" prefWidth="214.0">
                             <children>
-                                <Circle fill="DODGERBLUE" layoutX="36.0" layoutY="40.0" radius="22.0" stroke="BLACK" strokeType="INSIDE" />
+                                <Circle fx:id="avatarAdmin" fill="DODGERBLUE" layoutX="36.0" layoutY="40.0" radius="22.0" stroke="BLACK" strokeType="INSIDE" />
+                        <ComboBox fx:id="choiceBoxLogout" layoutX="62.0" layoutY="17.0" prefHeight="46.0" prefWidth="134.0" style="-fx-background-color: transparent;" />
                                 <Text fx:id="textUsername" layoutX="70.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: 700;" text="LeKan Okeowo">
                                     <font>
                                         <Font size="14.0" />
@@ -162,7 +163,6 @@
                                         <Font size="11.0" />
                                     </font>
                                 </Text>
-                        <ComboBox fx:id="choiceBoxLogout" layoutX="70.0" layoutY="14.0" prefHeight="46.0" prefWidth="134.0" style="-fx-background-color: transparent;" />
                             </children>
                         </Pane>
                         <Line endY="9.0" layoutX="856.0" layoutY="11.0" startY="53.0" stroke="#b5b5b5" />
@@ -173,7 +173,7 @@
                 </Pane>
                 <Pane prefHeight="44.0" prefWidth="1094.0">
                     <children>
-                        <Text fill="#4a85f6" layoutX="53.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: 700;" text="Category Dashboard">
+                        <Text fill="#4a85f6" layoutX="53.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: 700;" text="Book Dashboard">
                             <font>
                                 <Font size="18.0" />
                             </font>
@@ -197,7 +197,7 @@
                                 <Cursor fx:constant="HAND" />
                             </cursor>
                         </ComboBox>
-                        <Button fx:id="newCategory" mnemonicParsing="false" prefHeight="40.0" prefWidth="104.0" text="Add category" textFill="WHITE">
+                        <Button fx:id="newBook" mnemonicParsing="false" prefHeight="40.0" prefWidth="88.0" text="Add book" textFill="WHITE">
                             <cursor>
                                 <Cursor fx:constant="HAND" />
                             </cursor>
@@ -219,15 +219,17 @@
                         <TableView fx:id="tableview" cacheShape="false" layoutX="36.0" layoutY="45.0" prefHeight="532.0" prefWidth="1049.0">
                             <columns>
                                 <TableColumn fx:id="idCol" editable="false" prefWidth="103.0" resizable="false" sortable="false" text="id" />
-                                <TableColumn fx:id="nameCol" editable="false" prefWidth="227.0" resizable="false" sortable="false" text="Name" />
-                                <TableColumn fx:id="desCol" editable="false" prefWidth="354.0" resizable="false" sortable="false" text="Description" />
-                                <TableColumn fx:id="createdCol" editable="false" prefWidth="249.0" resizable="false" sortable="false" text="Create At" />
-                                <TableColumn fx:id="actionCol" editable="false" prefWidth="115.0" resizable="false" sortable="false" text="Action" />
+                                <TableColumn fx:id="imageCol" editable="false" prefWidth="118.0" resizable="false" sortable="false" text="Image" />
+                                <TableColumn fx:id="nameCol" editable="false" prefWidth="125.0" resizable="false" sortable="false" text="Name" />
+                        <TableColumn fx:id="priceCol" prefWidth="149.0" text="Price" />
+                                <TableColumn fx:id="desCol" editable="false" prefWidth="267.0" resizable="false" sortable="false" text="Description" />
+                                <TableColumn fx:id="createdCol" editable="false" prefWidth="170.0" resizable="false" sortable="false" text="Create At" />
+                                <TableColumn fx:id="actionCol" editable="false" prefWidth="116.0" resizable="false" sortable="false" text="Action" />
                             </columns>
                         </TableView>
                         <Pane layoutX="36.0" layoutY="6.0" prefHeight="39.0" prefWidth="1049.0" style="-fx-background-color: #fff; -fx-background-radius: 10px 10px 0 0;">
                             <children>
-                                <Text layoutX="14.0" layoutY="24.0" strokeType="OUTSIDE" strokeWidth="0.0" text="List Category">
+                                <Text layoutX="14.0" layoutY="24.0" strokeType="OUTSIDE" strokeWidth="0.0" text="List Book">
                                     <font>
                                         <Font name="System Bold" size="14.0" />
                                     </font>

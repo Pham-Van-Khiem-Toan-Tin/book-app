@@ -118,4 +118,26 @@ public class PublisherDaoImpl implements PublisherDao {
             db.closeConnection(); // Đảm bảo kết nối được đóng sau khi sử dụng xong
         }
     }
+
+    @Override
+    public List<PublisherEntity> getAllPublisherActive() {
+        List<PublisherEntity> publisherEntityList = new ArrayList<>();
+        String sql = "SELECT publisher_id, name FROM publisher WHERE isEnable = 1";
+
+        try {
+            db.initPrepar(sql);
+            resultSet = db.executeSelect();
+            while (resultSet.next()) {
+                PublisherEntity publisher = new PublisherEntity();
+                publisher.setId(resultSet.getString("publisher_id"));
+                publisher.setName(resultSet.getString("name"));
+                publisherEntityList.add(publisher);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            db.closeConnection();
+        }
+        return publisherEntityList;
+    }
 }

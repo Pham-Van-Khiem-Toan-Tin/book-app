@@ -245,7 +245,7 @@
                <top>
                   <VBox prefHeight="342.0" prefWidth="202.0" BorderPane.alignment="CENTER">
                      <children>
-                        <Button alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="53.0" prefWidth="202.0" style="-fx-background-color: transperent;" text="Books">
+                        <Button fx:id="btnBooks" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="53.0" prefWidth="202.0" style="-fx-background-color: transperent;" text="Books">
                            <graphic>
                               <FontAwesomeIconView glyphName="BOOK" />
                            </graphic>

@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -18,7 +19,7 @@ import java.util.Arrays;
 public class UIUtils {
     private static String rootDirectory = "/com/book/app/";
 
-    public static void setupUIElements(Text textWelcome, Text textUsername, ChoiceBox<String> choiceBoxLogout) {
+    public static void setupUIElements(Text textWelcome, Text textUsername, ComboBox<String> choiceBoxLogout) {
         textWelcome.setText("Hello, " + AppUtils.getUsername());
         textUsername.setText(AppUtils.getUsername());
         choiceBoxLogout.getItems().add("Log out");
@@ -33,7 +34,14 @@ public class UIUtils {
             }
         });
     }
-    public  static void setupMenuEmployee(Button btnAuthor, Button btnCategory, Button btnPublisher, Button btnHome) {
+    public  static void setupMenuEmployee(Button btnAuthor, Button btnCategory, Button btnPublisher, Button btnHome, Button btnBook) {
+        btnBook.setOnAction(event -> {
+            try {
+                handleSwitchOtherScene(event, "book/book.fxml", "static/css/book/books.css");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
         btnAuthor.setOnAction(event -> {
             try {
                 handleSwitchOtherScene(event, "author/authors.fxml", "static/css/author/authors.css");

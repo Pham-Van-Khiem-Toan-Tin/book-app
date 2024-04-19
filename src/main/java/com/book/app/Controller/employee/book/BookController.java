@@ -1,11 +1,9 @@
-package com.book.app.Controller.employee.author;
+package com.book.app.Controller.employee.book;
 
-import com.book.app.Controller.admin.NewUserController;
-import com.book.app.Dao.AuthorDao;
-import com.book.app.Dao.impl.AuthorDaoImpl;
-import com.book.app.Entity.AuthorEntity;
-import com.book.app.Entity.EmployeeEntity;
-import com.book.app.Utils.AppUtils;
+import com.book.app.Controller.employee.book.EditBookController;
+import com.book.app.Controller.employee.book.NewBookController;
+import com.book.app.Dao.impl.BookDaoImpl;
+import com.book.app.Entity.BookEntity;
 import com.book.app.Utils.DateUtils;
 import com.book.app.Utils.UIUtils;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
@@ -18,7 +16,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -32,12 +29,11 @@ import javafx.util.Callback;
 
 import java.io.IOException;
 import java.net.URL;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
-public class AuthorController implements Initializable {
+public class BookController implements Initializable {
     private String rootDirectory = "/com/book/app/";
     @FXML
     Text textWelcome, textUsername;
@@ -46,43 +42,35 @@ public class AuthorController implements Initializable {
     @FXML
     ComboBox<String> sortCombo;
     @FXML
-    private TableView<AuthorEntity> tableview;
+    private TableView<BookEntity> tableview;
     @FXML
-    private TableColumn<AuthorEntity, String> nameCol;
+    private TableColumn<BookEntity, String> nameCol;
     @FXML
-    private TableColumn<AuthorEntity, Void> imageCol;
+    private TableColumn<BookEntity, Void> imageCol;
     @FXML
-    private TableColumn<AuthorEntity, String> desCol;
+    private TableColumn<BookEntity, String> desCol;
     @FXML
-    private TableColumn<AuthorEntity, String> idCol;
+    private TableColumn<BookEntity, String> priceCol;
     @FXML
-    private TableColumn<AuthorEntity, String> createdCol;
+    private TableColumn<BookEntity, String> idCol;
     @FXML
-    private TableColumn<AuthorEntity, Void> actionCol;
+    private TableColumn<BookEntity, String> createdCol;
+    @FXML
+    private TableColumn<BookEntity, Void> actionCol;
     @FXML
     private ComboBox<String> choiceBoxLogout;
     @FXML
-    private Button newAuthor, btnSearch, btnAuthor, btnCategory, btnPublisher, btnHome, btnBook;
+    private Button newBook, btnSearch, btnBook, btnCategory, btnPublisher, btnHome;
 
     private Parent root;
-    private AuthorDaoImpl dao = new AuthorDaoImpl();
-
-    private void updateAuthorList() {
-        String sortType = sortCombo.getValue();
-        String keyword = null;
-        if (textSearch.getText() != null) {
-            keyword = textSearch.getText().trim();
-        }
-        tableview.setItems(FXCollections.observableArrayList(dao.getAllAuthor(keyword, sortType)));
-    }
-
+    private BookDaoImpl dao = new BookDaoImpl();
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         UIUtils.setupUIElements(textWelcome, textUsername, choiceBoxLogout);
-        UIUtils.setupMenuEmployee(btnAuthor, btnCategory, btnPublisher, btnHome, btnBook);
-        idCol.setCellValueFactory(new PropertyValueFactory<AuthorEntity, String>("id"));
-        nameCol.setCellValueFactory(new PropertyValueFactory<AuthorEntity, String>("name"));
-        imageCol.setCellFactory(param -> new TableCell<AuthorEntity, Void>() {
+        UIUtils.setupMenuEmployee(btnBook, btnCategory, btnPublisher, btnHome, btnBook);
+        idCol.setCellValueFactory(new PropertyValueFactory<BookEntity, String>("id"));
+        nameCol.setCellValueFactory(new PropertyValueFactory<BookEntity, String>("name"));
+        imageCol.setCellFactory(param -> new TableCell<BookEntity, Void>() {
             private final ImageView imageView = new ImageView();
             private final HBox pane = new HBox(imageView);
 
@@ -98,8 +86,8 @@ public class AuthorController implements Initializable {
                 if (empty) {
                     setGraphic(null);
                 } else {
-                    AuthorEntity author = getTableView().getItems().get(getIndex());
-                    if (author != null) {
+                    BookEntity book = getTableView().getItems().get(getIndex());
+                    if (book != null) {
                         Image image = new Image(getTableView().getItems().get(getIndex()).getImage_url());
                         imageView.setImage(image);
                     }
@@ -107,13 +95,24 @@ public class AuthorController implements Initializable {
                 }
             }
         });
-        desCol.setCellValueFactory(new PropertyValueFactory<AuthorEntity, String>("description"));
-        createdCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<AuthorEntity, String>, ObservableValue<String>>() {
+        priceCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<BookEntity, String>, ObservableValue<String>>() {
             @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<AuthorEntity, String> param) {
-                AuthorEntity author = param.getValue();
-                if (author != null) {
-                    String created_at = DateUtils.convertLocalDateTimeToStringPattern(author.getCreated_at(), "HH:mm:ss dd-MM-yyyy");
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<BookEntity, String> param) {
+                BookEntity book = param.getValue();
+                if (book != null) {
+                    String price = Optional.ofNullable(book.getPrice()).map(String::valueOf).orElse("not imported yet");
+                    return new SimpleStringProperty(price);
+                }
+                return null;
+            }
+        });
+        desCol.setCellValueFactory(new PropertyValueFactory<BookEntity, String>("description"));
+        createdCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<BookEntity, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<BookEntity, String> param) {
+                BookEntity book = param.getValue();
+                if (book != null) {
+                    String created_at = DateUtils.convertLocalDateTimeToStringPattern(book.getCreated_at(), "HH:mm:ss dd-MM-yyyy");
                     return new SimpleStringProperty(created_at);
                 }
                 return null;
@@ -121,7 +120,7 @@ public class AuthorController implements Initializable {
 
 
         });
-        actionCol.setCellFactory(param -> new TableCell<AuthorEntity, Void>() {
+        actionCol.setCellFactory(param -> new TableCell<BookEntity, Void>() {
             private final Button editButton = new Button();
             private final Button lockButton = new Button();
             private final HBox pane = new HBox(editButton, lockButton);
@@ -134,17 +133,17 @@ public class AuthorController implements Initializable {
                 FontAwesomeIconView editIcon = new FontAwesomeIconView(FontAwesomeIcon.EDIT);
                 editButton.setGraphic(editIcon);
                 editButton.setOnAction(event -> {
+                    BookEntity book = dao.getBookDetail(getTableView().getItems().get(getIndex()).getId());
                     try {
-                        AuthorEntity author = getTableView().getItems().get(getIndex());
-                        openDialogEditAuthor(event, author);
+                        openDialogEditBook(event, book);
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
                 });
                 lockButton.setOnAction(event -> {
-                    AuthorEntity author = getTableView().getItems().get(getIndex());
-                    dao.lockOrUnLockAuthor(author.getId(), !author.getEnable());
-                    updateAuthorList();
+                    BookEntity author = getTableView().getItems().get(getIndex());
+                    dao.lockOrUnLockBook(author.getId(), !author.getEnable());
+//                    updateBookList();
                 });
 
             }
@@ -155,7 +154,7 @@ public class AuthorController implements Initializable {
                 if (empty) {
                     setGraphic(null);
                 } else {
-                    AuthorEntity author = getTableView().getItems().get(getIndex());
+                    BookEntity author = getTableView().getItems().get(getIndex());
                     if (author != null) {
                         FontAwesomeIconView lockIcon = new FontAwesomeIconView(author.getEnable() ? FontAwesomeIcon.LOCK : FontAwesomeIcon.UNLOCK);
                         lockButton.setGraphic(lockIcon);
@@ -164,9 +163,9 @@ public class AuthorController implements Initializable {
                 }
             }
         });
-        newAuthor.setOnAction(event -> {
+        newBook.setOnAction(event -> {
             try {
-                openDialogNewAuthor(event);
+                openDialogNewBook(event);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -177,27 +176,30 @@ public class AuthorController implements Initializable {
             if (textSearch.getText() != null) {
                 keyword = textSearch.getText().trim();
             }
-            tableview.setItems(FXCollections.observableArrayList(dao.getAllAuthor(keyword, sortType)));
+            tableview.setItems(FXCollections.observableArrayList(dao.getAllBook(keyword, sortType)));
         });
-        tableview.setItems(FXCollections.observableArrayList(dao.getAllAuthor(null, null)));
+        sortCombo.getItems().addAll("Name", "Price", "Created_at");
+        sortCombo.setOnAction(event -> {
+            tableview.setItems(FXCollections.observableArrayList(dao.getAllBook(null, sortCombo.getValue())));
+        });
+        tableview.setItems(FXCollections.observableArrayList(dao.getAllBook(null, null)));
     }
-
-    public void openDialogEditAuthor(ActionEvent event, AuthorEntity author) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(rootDirectory + "dialog/author/edit-author.fxml"));
+    public void openDialogEditBook(ActionEvent event, BookEntity book) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(rootDirectory + "dialog/book/edit-book.fxml"));
         root = loader.load();
         Dialog<String> dialog = new Dialog<>();
         dialog.getDialogPane().setContent(root);
         dialog.setResizable(false);
         Scene dialogScene = dialog.getDialogPane().getScene();
-        dialogScene.getStylesheets().add(getClass().getResource(rootDirectory + "static/css/author/edit-author.css").toExternalForm());
+        dialogScene.getStylesheets().add(getClass().getResource(rootDirectory + "static/css/book/edit-book.css").toExternalForm());
         Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
-        EditAuthorController controller = loader.getController();
+        EditBookController controller = loader.getController();
         controller.setStage(stage);
         controller.setTableView(tableview);
         controller.setDialog(dialog);
         controller.setOldSort(Objects.requireNonNullElse(sortCombo.getValue(), ""));
         controller.setOldSearch(Objects.requireNonNullElse(textSearch.getText(), ""));
-        controller.setOldData(author);
+        controller.setOldData(book);
         stage.setOnCloseRequest(e -> {
             dialog.setResult("close");
             dialog.close();
@@ -205,16 +207,16 @@ public class AuthorController implements Initializable {
         // Hiển thị dialog và đợi cho đến khi nó đóng
         dialog.show();
     }
-    public void openDialogNewAuthor(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(rootDirectory + "dialog/author/new-author.fxml"));
+    public void openDialogNewBook(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(rootDirectory + "dialog/book/new-book.fxml"));
         root = loader.load();
         Dialog<String> dialog = new Dialog<>();
         dialog.getDialogPane().setContent(root);
         dialog.setResizable(false);
         Scene dialogScene = dialog.getDialogPane().getScene();
-        dialogScene.getStylesheets().add(getClass().getResource(rootDirectory + "static/css/author/new-author.css").toExternalForm());
+        dialogScene.getStylesheets().add(getClass().getResource(rootDirectory + "static/css/book/new-book.css").toExternalForm());
         Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
-        NewAuthorController controller = loader.getController();
+        NewBookController controller = loader.getController();
         controller.setStage(stage);
         controller.setTableView(tableview);
         controller.setDialog(dialog);

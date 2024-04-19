@@ -58,7 +58,7 @@ public class UserController implements Initializable {
     @FXML
     private TableColumn<EmployeeEntity, Void> actionCol;
     @FXML
-    private ChoiceBox<String> choiceBoxLogout;
+    private ComboBox<String> choiceBoxLogout;
     @FXML
     private TextField textSearch;
     @FXML

@@ -76,6 +76,7 @@ public class AuthorDaoImpl implements AuthorDao {
         }
     }
 
+
     @Override
     public boolean editAuthor(AuthorEntity author) {
         String sql = "UPDATE author " +
@@ -128,5 +129,31 @@ public class AuthorDaoImpl implements AuthorDao {
         } finally {
             db.closeConnection(); // Đảm bảo kết nối được đóng sau khi sử dụng xong
         }
+    }
+
+    @Override
+    public List<AuthorEntity> getAllAuthorName() {
+        List<AuthorEntity> authorEntityList = new ArrayList<>();
+        String sql = "SELECT author_id, name FROM author";
+        try {
+            db.initPrepar(sql);
+            resultSet = db.executeSelect();
+            while (resultSet.next()) {
+                AuthorEntity author = new AuthorEntity();
+                author.setId(resultSet.getString("author_id"));
+                author.setName(resultSet.getString("name"));
+                authorEntityList.add(author);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            db.closeConnection();
+        }
+        return authorEntityList;
+    }
+
+    @Override
+    public List<AuthorEntity> getAllAuthorOfBook(String bookId) {
+        return null;
     }
 }

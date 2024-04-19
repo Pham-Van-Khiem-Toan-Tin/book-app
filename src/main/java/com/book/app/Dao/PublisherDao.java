@@ -9,4 +9,5 @@ public interface PublisherDao {
     boolean addPublisher(PublisherEntity publisher);
     boolean editPublisher(PublisherEntity publisher);
     boolean lockOrUnLockPublisher(String id, Boolean enable);
+    List<PublisherEntity> getAllPublisherActive();
 }

@@ -4,6 +4,15 @@ public class AuthorEntity extends BaseEntity{
     private String id;
     private String image_url;
     private String image_public_id;
+    private boolean containsBook;
+
+    public boolean isContainsBook() {
+        return containsBook;
+    }
+
+    public void setContainsBook(boolean containsBook) {
+        this.containsBook = containsBook;
+    }
 
     public String getImage_public_id() {
         return image_public_id;

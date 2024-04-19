@@ -2,6 +2,7 @@ package com.book.app.Dao.impl;
 
 import com.book.app.Config.DBConnection;
 import com.book.app.Dao.CategoryDao;
+import com.book.app.Entity.AuthorEntity;
 import com.book.app.Entity.CategoryEntity;
 
 import java.sql.ResultSet;
@@ -11,10 +12,10 @@ import java.util.List;
 
 public class CategoryDaoImpl implements CategoryDao {
     private DBConnection db = new DBConnection();
+    private List<CategoryEntity> categoryEntityList = new ArrayList<>();
     private ResultSet resultSet;
     @Override
     public List<CategoryEntity> getAllCategory(String keyword, String sort) {
-        List<CategoryEntity> categoryEntityList = new ArrayList<>();
         String sql = "SELECT * FROM category";
         if (keyword != null && !keyword.trim().isEmpty()) {
             sql = sql + " WHERE  name LIKE '%" + keyword + "%' OR description LIKE '%" + keyword + "%' OR (CAST(created_at AS CHAR) LIKE '%" + keyword + "%')";
@@ -116,5 +117,30 @@ public class CategoryDaoImpl implements CategoryDao {
         } finally {
             db.closeConnection(); // Đảm bảo kết nối được đóng sau khi sử dụng xong
         }
+    }
+
+    @Override
+    public List<CategoryEntity> getAllCategoryName() {
+        String sql = "SELECT category_id, name FROM category WHERE isEnable = 1";
+        try {
+            db.initPrepar(sql);
+            resultSet = db.executeSelect();
+            while (resultSet.next()) {
+                CategoryEntity category = new CategoryEntity();
+                category.setId(resultSet.getString("category_id"));
+                category.setName(resultSet.getString("name"));
+                categoryEntityList.add(category);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            db.closeConnection();
+        }
+        return categoryEntityList;
+    }
+
+    @Override
+    public List<CategoryEntity> getAllCategoryOfBook(String bookId) {
+        return null;
     }
 }
