@@ -34,43 +34,50 @@ public class UIUtils {
             }
         });
     }
-    public  static void setupMenuEmployee(Button btnAuthor, Button btnCategory, Button btnPublisher, Button btnHome, Button btnBook) {
-        btnBook.setOnAction(event -> {
-            try {
-                handleSwitchOtherScene(event, "book/book.fxml", "static/css/book/books.css");
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+    public  static void setupMenuEmployee(Button... buttons) {
+        for (Button button: buttons) {
+            String directoryClass = null, directoryCss = null;
+            switch (button.getText()) {
+                case "Home":
+                    directoryClass = "home/home.fxml";
+                    directoryCss = "static/css/home.css";
+                    break;
+                case "Book":
+                    directoryClass = "book/book.fxml";
+                    directoryCss = "static/css/book/books.css";
+                    break;
+                case "Category":
+                    directoryClass = "category/category.fxml";
+                    directoryCss = "static/css/category/category.css";
+                    break;
+                case "Author":
+                    directoryClass = "author/authors.fxml";
+                    directoryCss = "static/css/author/authors.css";
+                    break;
+                case "Publisher":
+                    directoryClass = "publisher/publisher.fxml";
+                    directoryCss = "static/css/publisher/publisher.css";
+                    break;
+                case "Inventory":
+                    directoryClass = "inventory/inventory.fxml";
+                    directoryCss = "static/css/inventory/inventory.css";
+                    break;
+                case "Order":
+                    directoryClass = "home/home.fxml";
+                    directoryCss = "static/css/home.css";
+                    break;
             }
-        });
-        btnAuthor.setOnAction(event -> {
-            try {
-                handleSwitchOtherScene(event, "author/authors.fxml", "static/css/author/authors.css");
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        btnPublisher.setOnAction(event -> {
-            try {
-                handleSwitchOtherScene(event, "publisher/publisher.fxml", "static/css/publisher/publisher.css");
-            } catch (Exception e) {
-                e.printStackTrace();
-                throw  new RuntimeException();
-            }
-        });
-        btnCategory.setOnAction(event -> {
-            try {
-                handleSwitchOtherScene(event, "category/category.fxml", "static/css/category/category.css");
-            } catch (Exception e) {
-                throw new RuntimeException();
-            }
-        });
-        btnHome.setOnAction(event -> {
-            try {
-                handleSwitchOtherScene(event, "home/home.fxml", "static/css/home.css");
-            } catch (Exception e) {
-                throw new RuntimeException();
-            }
-        });
+            String finalDirectoryClass = directoryClass;
+            String finalDirectoryCss = directoryCss;
+            button.setOnAction(event -> {
+                try {
+                    handleSwitchOtherScene(event, finalDirectoryClass, finalDirectoryCss);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+
+        }
     }
     public static void handleSwitchOtherScene(ActionEvent event, String directoryClass, String directoryCss) throws IOException {
         try {

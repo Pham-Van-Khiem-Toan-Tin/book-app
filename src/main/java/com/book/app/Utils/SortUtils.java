@@ -13,7 +13,7 @@ public class SortUtils {
         if (!sortType.isEmpty()) {
             switch (sortType) {
                 case "id: Ascending":
-                    sortedData.setComparator(Comparator.comparingInt(EmployeeEntity::getId));
+                    sortedData.setComparator(Comparator.comparing(EmployeeEntity::getId));
                     break;
                 case "username: A-Z":
                     sortedData.setComparator(Comparator.comparing(EmployeeEntity::getUsername));

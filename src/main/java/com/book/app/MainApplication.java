@@ -26,6 +26,7 @@ public class MainApplication extends Application {
                     String[] user = result.split("\\.");
                     AppUtils.setUsername(user[0]);
                     AppUtils.setRole(user[2]);
+                    AppUtils.setId(user[3]);
                     String fxmFile, cssFile;
                     fxmFile = rootDirectory + (user[2].equals("admin") ? "admin/user-management.fxml": "home/home.fxml");
                     cssFile = user[2].equals("admin") ? "static/css/user-management.css": "static/css/home.css";

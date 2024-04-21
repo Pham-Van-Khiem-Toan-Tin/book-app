@@ -118,7 +118,7 @@ public class UserController implements Initializable {
                 resetPassButton.setGraphic(resetPassIcon);
                 resetPassButton.setOnAction(event -> {
                     String oldPassword = getTableView().getItems().get(getIndex()).getPassword();
-                    int userId = getTableView().getItems().get(getIndex()).getId();
+                    String userId = getTableView().getItems().get(getIndex()).getId();
                     try {
                         openDialogResetPassword(event, oldPassword, userId);
                     } catch (IOException e) {
@@ -233,7 +233,7 @@ public class UserController implements Initializable {
     private void openLockDialogUser(ActionEvent event) throws IOException {
 
     }
-    private void openDialogResetPassword(ActionEvent event, String oldPassword, int id) throws IOException {
+    private void openDialogResetPassword(ActionEvent event, String oldPassword, String id) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(rootDirectory + "dialog/reset-password.fxml"));
         Parent root = loader.load();
         Dialog<String> dialog = new Dialog<>();

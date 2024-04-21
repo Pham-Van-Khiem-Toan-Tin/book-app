@@ -3,17 +3,17 @@ package com.book.app.Entity;
 import java.time.LocalDate;
 
 public class UserEntity {
-    private int id;
+    private String id;
     private String email;
     private String phone;
     private String address;
     private LocalDate created_at;
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

@@ -69,12 +69,13 @@ public class AuthenticationController implements Initializable {
         if (user != null) {
             if (remember.isSelected()) {
                 Key key = TokenUtil.generateKey();
-                String token = TokenUtil.encrypt(user.getUsername()+"."+ user.getPassword() + "." + (user.getAdmin() ? "admin" : "employee"), key);
+                String token = TokenUtil.encrypt(user.getUsername()+"."+ user.getPassword() + "." + (user.getAdmin() ? "admin" : "employee") + "." + user.getId(), key);
                 TokenUtil.saveToken(token);
             }
             String fxmFile, cssFile;
             AppUtils.setRole(user.getAdmin() ? "admin" : "user");
             AppUtils.setUsername(user.getUsername());
+            AppUtils.setId(user.getId());
             fxmFile = rootDirectory + (user.getAdmin() ? "admin/user-management.fxml": "home/home.fxml");
             cssFile = user.getAdmin() ? "static/css/user-management.css": "static/css/home.css";
             UIUtils.handleSwitchOtherScene(event, fxmFile, cssFile);

@@ -1,5 +1,6 @@
 package com.book.app.Controller.employee.book;
 
+import com.book.app.Config.ImageUploader;
 import com.book.app.DTO.CloudinaryForm;
 import com.book.app.Dao.impl.AuthorDaoImpl;
 import com.book.app.Dao.impl.BookDaoImpl;
@@ -9,22 +10,28 @@ import com.book.app.Entity.AuthorEntity;
 import com.book.app.Entity.BookEntity;
 import com.book.app.Entity.CategoryEntity;
 import com.book.app.Entity.PublisherEntity;
+import com.book.app.Utils.UUIDUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.*;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class EditBookController implements Initializable {
@@ -35,13 +42,15 @@ public class EditBookController implements Initializable {
     @FXML
     ImageView imagePreview;
     @FXML
-    TextField bookTitle, description;
-    @FXML
     ComboBox<PublisherEntity> choicePublisher;
     @FXML
-    ListView<AuthorEntity> listViewAuthor;
+    TextField listAuthorName, listCategoryName, authorName, categoryName, bookTitle, description;
     @FXML
-    ListView<CategoryEntity> listViewCategory;
+    ListView<AuthorEntity> listAuthor;
+    @FXML
+    ListView<CategoryEntity> listCategory;
+    @FXML
+    Pane boxSearchAuthor, boxSearchCategory;
     private String oldSearch;
     private String oldSort;
     private Dialog<String> dialog;
@@ -59,6 +68,14 @@ public class EditBookController implements Initializable {
     private List<PublisherEntity> publisherEntityList;
     private List<AuthorEntity> authorEntityObservableList;
     private List<CategoryEntity> categoryEntityObservableList;
+    public CloudinaryForm getImageBook() {
+        return imageBook;
+    }
+
+    public void setImageBook(CloudinaryForm imageBook) {
+        this.imageBook = imageBook;
+    }
+
 
     public String getOldSearch() {
         return oldSearch;
@@ -135,27 +152,31 @@ public class EditBookController implements Initializable {
                 })
                 .collect(Collectors.toList());
         imagePreview.setImage(new Image(oldData.getImage_url()));
+        nameFile.setText("Book Image");
         authors = oldData.getAuthors();
         categories = oldData.getCategories();
+        changeContentTextField(listAuthorName, authors.stream().map(element -> element.getName()).collect(Collectors.joining(", ")));
+        changeContentTextField(listCategoryName, categories.stream().map(element -> element.getName()).collect(Collectors.joining(", ")));
     }
 
     private boolean validateFields() {
         return bookTitle.getText() != null && !bookTitle.getText().trim().isEmpty() &&
                 description.getText() != null && !description.getText().trim().isEmpty() &&
                 !authors.isEmpty() &&
-                choicePublisher.getValue() != null;
+                choicePublisher.getValue() != null && nameFile.getText() != null;
     }
+
     private boolean checkOldValue() {
         if (!Objects.isNull(oldData)) {
             String newBookName = Objects.requireNonNullElse(bookTitle.getText(), "");
             String newBookDescription = Objects.requireNonNullElse(description.getText(), "");
             boolean nameCheck = newBookName.trim().equals(oldData.getName());
             boolean descriptionCheck = newBookDescription.trim().equals(oldData.getDescription());
-            boolean categoryCheck = oldData.getCategories().stream().map(CategoryEntity::getId).sorted().collect(Collectors.toCollection(ArrayList::new)).equals(categories.stream().map(CategoryEntity::getId).sorted().collect(Collectors.toCollection(ArrayList::new))); ;
-            boolean authorCheck = oldData.getAuthors().stream().map(AuthorEntity::getId).sorted().collect(Collectors.toCollection(ArrayList::new)).equals(authors.stream().map(AuthorEntity::getId).sorted().collect(Collectors.toCollection(ArrayList::new))); ;
+            boolean categoryCheck = oldData.getCategories().stream().map(CategoryEntity::getId).sorted().collect(Collectors.toCollection(ArrayList::new)).equals(categories.stream().map(CategoryEntity::getId).sorted().collect(Collectors.toCollection(ArrayList::new)));
+            boolean authorCheck = oldData.getAuthors().stream().map(AuthorEntity::getId).sorted().collect(Collectors.toCollection(ArrayList::new)).equals(authors.stream().map(AuthorEntity::getId).sorted().collect(Collectors.toCollection(ArrayList::new)));
             boolean publisherCheck = choicePublisher.getValue() != null && choicePublisher.getValue().getId().equals(oldData.getPublisher().getId());
-            System.out.println("test");
-            return !(nameCheck && descriptionCheck && categoryCheck && authorCheck && publisherCheck);
+            boolean fileCheck = nameFile.getText() != null && nameFile.getText().equals("Book image");
+            return !(nameCheck && descriptionCheck && categoryCheck && authorCheck && publisherCheck && fileCheck);
         }
         return true;
     }
@@ -163,7 +184,9 @@ public class EditBookController implements Initializable {
     private void checkFields() {
         submitButton.setDisable(!checkOldValue() || !validateFields());
     }
-
+    private void changeContentTextField(TextField listname, String text) {
+        listname.setText(text);
+    }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         btnImage.setOnAction(event -> {
@@ -180,6 +203,13 @@ public class EditBookController implements Initializable {
             }
             checkFields();
         });
+        submitButton.setOnAction(event -> {
+            try {
+                submit(event);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
         publisherEntityList = pls.getAllPublisherActive();
         choicePublisher.setItems(FXCollections.observableArrayList(publisherEntityList));
         choicePublisher.setConverter(new StringConverter<PublisherEntity>() {
@@ -195,9 +225,15 @@ public class EditBookController implements Initializable {
             }
         });
         authorEntityObservableList = authorDao.getAllAuthorName();
-
-        listViewAuthor.setItems(FXCollections.observableArrayList(authorEntityObservableList));
-        listViewAuthor.setCellFactory(param -> new ListCell<AuthorEntity>() {
+        categoryEntityObservableList = categoryDao.getAllCategoryName();
+        bookTitle.textProperty().addListener((observable, oldValue, newValue) -> checkFields());
+        description.textProperty().addListener((observable, oldValue, newValue) -> checkFields());
+        choicePublisher.setOnAction(event -> {
+            choicePublisher.hide();
+            checkFields();
+        });
+        listAuthor.setItems(FXCollections.observableArrayList(authorEntityObservableList));
+        listAuthor.setCellFactory(param -> new ListCell<AuthorEntity>() {
             @Override
             protected void updateItem(AuthorEntity item, boolean empty) {
                 super.updateItem(item, empty);
@@ -218,18 +254,30 @@ public class EditBookController implements Initializable {
                             selectedAuthor.setContainsBook(false);
                             authors = (ArrayList<AuthorEntity>) authors.stream().filter(author -> !author.getId().equals(selectedAuthor.getId())).collect(Collectors.toList());
                         }
+                        changeContentTextField(listAuthorName, authors.stream().map(element -> element.getName()).collect(Collectors.joining(", ")));
                         checkFields();
                     });
                     setGraphic(checkBox);
                 }
             }
         });
-
-
-        categoryEntityObservableList = categoryDao.getAllCategoryName();
-
-        listViewCategory.setItems(FXCollections.observableArrayList(categoryEntityObservableList));
-        listViewCategory.setCellFactory(param -> new ListCell<CategoryEntity>() {
+        listAuthorName.setOnMouseClicked(event -> {
+            boxSearchAuthor.setVisible(!boxSearchAuthor.isVisible());
+            boxSearchCategory.setVisible(false);
+        });
+        authorName.textProperty().addListener((observable, oldValue, newValue) -> {
+            String searchText = Optional.ofNullable(newValue).orElse("");
+            List<AuthorEntity> resultSearch = new ArrayList<>();
+            if (searchText.isEmpty()) {
+                resultSearch = authorEntityObservableList;
+            } else {
+                Pattern pattern = Pattern.compile(searchText, Pattern.CASE_INSENSITIVE);
+                resultSearch = authorEntityObservableList.stream().filter(author -> pattern.matcher(author.getName()).find()).collect(Collectors.toList());
+            }
+            listAuthor.setItems(FXCollections.observableArrayList(resultSearch));
+        });
+        listCategory.setItems(FXCollections.observableArrayList(categoryEntityObservableList));
+        listCategory.setCellFactory(param -> new ListCell<CategoryEntity>() {
             @Override
             protected void updateItem(CategoryEntity item, boolean empty) {
                 super.updateItem(item, empty);
@@ -248,19 +296,68 @@ public class EditBookController implements Initializable {
                         } else {
                             categories = (ArrayList<CategoryEntity>) categories.stream().filter(category -> !category.getId().equals(selectedCate.getId())).collect(Collectors.toList());
                         }
+                        changeContentTextField(listCategoryName, categories.stream().map(element -> element.getName()).collect(Collectors.joining(", ")));
                         checkFields();
                     });
                     setGraphic(checkBox);
                 }
             }
         });
-        bookTitle.textProperty().addListener((observable, oldValue, newValue) -> checkFields());
-        description.textProperty().addListener((observable, oldValue, newValue) -> checkFields());
-        choicePublisher.setOnAction(event -> {
-            choicePublisher.hide();
-            checkFields();
+        categoryName.textProperty().addListener((observable, oldValue, newValue) -> {
+            String searchText = Optional.ofNullable(newValue).orElse("");
+            List<CategoryEntity> resultSearch = new ArrayList<>();
+            if (searchText.isEmpty()) {
+                resultSearch = categoryEntityObservableList;
+            } else {
+                Pattern pattern = Pattern.compile(searchText, Pattern.CASE_INSENSITIVE);
+                resultSearch = categoryEntityObservableList.stream().filter(category -> pattern.matcher(category.getName()).find()).collect(Collectors.toList());
+            }
+            listCategory.setItems(FXCollections.observableArrayList(resultSearch));
+        });
+        listCategoryName.setOnMouseClicked(mouseEvent -> {
+            boxSearchCategory.setVisible(!boxSearchCategory.isVisible());
+            boxSearchAuthor.setVisible(false);
         });
         checkFields();
+    }
 
+    public void submit(ActionEvent event) throws Exception {
+        String title = bookTitle.getText().trim();
+        String descriptionText = description.getText().trim();
+        BookEntity book = new BookEntity();
+        book.setId(oldData.getId());
+        book.setName(title);
+        book.setDescription(descriptionText);
+        book.setCategories(categories);
+        book.setPublisher(choicePublisher.getValue());
+        book.setAuthors(authors);
+        if (selectedFile != null) {
+            try {
+                ImageUploader imageUploader = new ImageUploader();
+                CloudinaryForm uploadResult = imageUploader.uploadImage(getSelectedFile(), "book");
+                setImageBook(uploadResult);
+                book.setImage_url(imageBook.getUrl());
+                book.setImage_public_id(imageBook.getPublic_id());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        boolean result = dao.editBook(book);
+        if (result) {
+            ImageUploader imageUploader = new ImageUploader();
+            imageUploader.destroyImage(oldData.getImage_public_id());
+            this.dialog.setResult("successfully");
+            this.dialog.close();
+            tableView.setItems(FXCollections.observableArrayList(dao.getAllBook(oldSearch, oldSort)));
+        } else {
+            if (selectedFile != null) {
+                try {
+                    ImageUploader imageUploader = new ImageUploader();
+                    imageUploader.destroyImage(imageBook.getPublic_id());
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
     }
 }

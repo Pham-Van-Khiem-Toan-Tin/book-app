@@ -9,6 +9,6 @@ public interface IEmployeeDao {
     List<EmployeeEntity> getAllEmployee();
     boolean addEmployee(EmployeeEntity employee);
     boolean editEmployee(EmployeeEntity employee);
-    boolean lockOrUnLockEmployee(int id, Boolean enable);
-    boolean resetPassword(int id, String newPassword);
+    boolean lockOrUnLockEmployee(String id, Boolean enable);
+    boolean resetPassword(String id, String newPassword);
 }

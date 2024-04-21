@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -113,7 +114,57 @@ public class BookDaoImpl implements BookDao {
     }
     @Override
     public boolean editBook(BookEntity book) {
-        return false;
+        List<AuthorEntity> authorEntityList = book.getAuthors();
+        List<CategoryEntity> categoryEntityList = book.getCategories();
+        try {
+            Connection conn = db.getConnection();
+            conn.setAutoCommit(false);
+            String updateBookSql = "UPDATE book SET title = ?, description = ?, updated_at = ?, publisherId = ?"
+                    + (book.getImage_public_id() != null ? ", public_id_image = ?, url_image= ?": "")
+                    + " WHERE book_id = ?";
+            PreparedStatement updateBookPrt = conn.prepareStatement(updateBookSql);
+            updateBookPrt.setString(1, book.getName());
+            updateBookPrt.setString(2, book.getDescription());
+            updateBookPrt.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
+            updateBookPrt.setString(4, book.getPublisher().getId());
+            if (book.getImage_public_id() != null) {
+                updateBookPrt.setString(5, book.getImage_public_id());
+                updateBookPrt.setString(6, book.getImage_url());
+            }
+            updateBookPrt.setString(book.getImage_public_id() != null ? 7 : 5, book.getId());
+            updateBookPrt.executeUpdate();
+            String deleteBookAuthor = "DELETE FROM book_author WHERE book_id = ?";
+            PreparedStatement deleteBookAuthorPrt = conn.prepareStatement(deleteBookAuthor);
+            deleteBookAuthorPrt.setString(1, book.getId());
+            deleteBookAuthorPrt.executeUpdate();
+            String insertBookAuthor = "INSERT INTO book_author (book_id, author_id) VALUES (?, ?)";
+            PreparedStatement insertBookAuthorPrt = conn.prepareStatement(insertBookAuthor);
+            for (AuthorEntity author: authorEntityList) {
+                insertBookAuthorPrt.setString(1, book.getId());
+                insertBookAuthorPrt.setString(2, author.getId());
+                insertBookAuthorPrt.addBatch();
+            }
+            insertBookAuthorPrt.executeBatch();
+            String deleteBookCateSql = "DELETE FROM book_category WHERE book_id = ?";
+            PreparedStatement deleteBookCatePrt = conn.prepareStatement(deleteBookCateSql);
+            deleteBookCatePrt.setString(1, book.getId());
+            deleteBookCatePrt.executeUpdate();
+            String insertBookCate = "INSERT INTO book_category (book_id, category_id) VALUES (?, ?)";
+            PreparedStatement insertBookCatePrt = conn.prepareStatement(insertBookCate);
+            for (CategoryEntity category: categoryEntityList) {
+                insertBookCatePrt.setString(1, book.getId());
+                insertBookCatePrt.setString(2, category.getId());
+                insertBookCatePrt.addBatch();
+            }
+            insertBookCatePrt.executeBatch();
+            conn.commit();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            db.closeConnection();
+        }
     }
 
     @Override
