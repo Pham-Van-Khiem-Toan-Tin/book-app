@@ -1,5 +1,6 @@
 package com.book.app.Controller.employee.inventory;
 
+import com.book.app.Controller.employee.category.NewCategoryController;
 import com.book.app.Dao.impl.InventoryDaoImpl;
 import com.book.app.Entity.CategoryEntity;
 import com.book.app.Entity.InventoryEntity;
@@ -137,6 +138,26 @@ public class InventoryController implements Initializable {
 //        dialog.show();
     }
     public void openDialogCreateInventory(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(rootDirectory + "dialog/inventory/new-inventory.fxml"));
+        root = loader.load();
+        Dialog<String> dialog = new Dialog<>();
+        dialog.getDialogPane().setContent(root);
+        dialog.setResizable(false);
+        Scene dialogScene = dialog.getDialogPane().getScene();
+        dialogScene.getStylesheets().add(getClass().getResource(rootDirectory + "static/css/inventory/new-inventory.css").toExternalForm());
+        Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
+        NewInventoryController controller = loader.getController();
+        controller.setStage(stage);
+        controller.setTableView(tableview);
+        controller.setDialog(dialog);
+        controller.setOldSort(Objects.requireNonNullElse(sortCombo.getValue(), ""));
+        controller.setOldSearch(Objects.requireNonNullElse(textSearch.getText(), ""));
+        stage.setOnCloseRequest(e -> {
+            dialog.setResult("close");
+            dialog.close();
+        });
+        // Hiển thị dialog và đợi cho đến khi nó đóng
+        dialog.show();
 
     }
 }

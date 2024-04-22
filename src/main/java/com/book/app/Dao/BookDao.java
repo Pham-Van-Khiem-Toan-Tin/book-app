@@ -10,4 +10,5 @@ public interface BookDao {
     boolean editBook(BookEntity book);
     boolean lockOrUnLockBook(String id, Boolean enable);
     BookEntity getBookDetail(String bookId);
+
 }
