@@ -1,9 +1,7 @@
 package com.book.app.Controller.employee.inventory;
 
-import com.book.app.Dao.impl.BookDaoImpl;
 import com.book.app.Dao.impl.InventoryDaoImpl;
 import com.book.app.Entity.BookEntity;
-import com.book.app.Entity.CategoryEntity;
 import com.book.app.Entity.InventoryEntity;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
