@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -14,7 +15,7 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.book.app.controller.AuthenticationController">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.book.app.Controller.AuthenticationController">
    <children>
       <Pane prefHeight="800.0" prefWidth="944.0" style="-fx-background-color: #f2ccbf;">
          <children>
@@ -64,17 +65,12 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Label>
-                  <TextField fx:id="inputPasswordLogin" layoutX="40.0" layoutY="245.0" prefHeight="50.0" prefWidth="301.0" promptText="password...">
-                     <padding>
-                        <Insets left="10.0" />
-                     </padding>
-                  </TextField>
                   <CheckBox ellipsisString="" layoutX="40.0" layoutY="315.0" mnemonicParsing="false" style="-fx-font-weight: 700;" text="Remember me" textFill="#7c8189">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </CheckBox>
-                  <Button layoutX="42.0" layoutY="365.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="301.0" style="-fx-background-color: #2c73eb;" text="Login" textFill="WHITE">
+                  <Button fx:id="submitButton" layoutX="42.0" layoutY="365.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="301.0" style="-fx-background-color: #2c73eb;" text="Login" textFill="WHITE">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
@@ -89,6 +85,7 @@
                         </Button>
                      </children>
                   </TextFlow>
+                  <PasswordField fx:id="inputPasswordLogin" layoutX="42.0" layoutY="249.0" prefHeight="44.0" prefWidth="301.0" promptText="password..." />
                </children>
             </Pane>
          </children></Pane>
