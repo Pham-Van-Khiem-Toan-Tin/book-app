@@ -1,0 +1,94 @@
+.table-view {
+    -fx-background-color: #fff;
+}
+.table-view .column-header {
+    -fx-background-color: #eff4fa;
+    -fx-pref-height: 50px;
+
+}
+.table-view .column-header .label {
+    -fx-text-fill: #8f9bb3;
+
+}
+.table-view .column {
+    -fx-alignment: center-left;
+}
+.table-view .table-cell{
+    -fx-pref-height: 60px;
+    -fx-alignment: center;
+}
+.input-search {
+    -fx-background-color: #fff;
+    -fx-border-color: #ced4da;
+    -fx-border-radius: 0.25em;
+}
+
+.input-search:focused {
+    -fx-border-color: #80bdff;
+    -fx-box-shadow: none;
+}
+.button-menu {
+    -fx-background-color: transparent;
+}
+.button-control {
+    -fx-text-fill: #fff;
+    -fx-font-weight: 700;
+    -fx-border-color: transparent;
+    -fx-border-radius: 8px;
+}
+.delete-button {
+    -fx-background-color: #f41b6a;
+}
+
+.delete-button:hover {
+    -fx-background-color: #d30f5b; /* Màu nền khi hover */
+}
+
+.delete-button:pressed {
+    -fx-background-color: #d30f5b; /* Màu nền khi nhấn */
+}
+
+.primary-button {
+    -fx-background-color: #167df5;
+}
+
+.primary-button:hover {
+    -fx-background-color: #0056b3; /* Màu nền khi hover */
+}
+
+.primary-button:pressed {
+    -fx-background-color: #0056b3; /* Màu nền khi nhấn */
+}
+/* Remove default button appearance */
+/* Remove default button appearance */
+.combo-box .arrow-button {
+    -fx-background-color: transparent;
+}
+
+/* Customize arrow icon */
+.combo-box .arrow-button .arrow {
+
+    -fx-background-size: 10px;
+}
+
+/* Style for dropdown list */
+.combo-box-popup .list-view {
+    -fx-background-color: white; /* Background color of dropdown */
+    -fx-padding: 5px; /* Padding around items in dropdown */
+}
+
+/* Style for items in dropdown */
+.combo-box-popup .list-view .list-cell {
+    -fx-padding: 5px;
+}
+
+/* Style for selected item */
+.combo-box-base .text-field {
+    -fx-background-color: white; /* Background color of selected item */
+    -fx-border-color: #ccc; /* Border color of selected item */
+    -fx-border-width: 1px; /* Border width of selected item */
+}
+.choice-box .list-cell:selected .text {
+    -fx-text-fill: transperent;
+}
+.choice-box.selected > .label { -fx-text-fill: transperent; }

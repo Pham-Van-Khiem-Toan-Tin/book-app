@@ -2,7 +2,7 @@ package com.book.app.Entity;
 
 import java.time.LocalDate;
 
-public class EmployeeEntity extends User {
+public class EmployeeEntity extends UserEntity {
 
     private String username;
     private String password;

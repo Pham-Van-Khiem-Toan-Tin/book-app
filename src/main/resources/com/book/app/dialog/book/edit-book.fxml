@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DialogPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<DialogPane prefHeight="591.0" prefWidth="853.0" style="-fx-padding: 0; -fx-background-color: #fff;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.book.app.Controller.employee.book.EditBookController">
+    <header>
+        <Pane prefHeight="600.0" prefWidth="853.0" style="-fx-background-color: #fff;">
+            <children>
+                <Label layoutX="50.0" layoutY="77.0" text="Title:" textFill="#7c8189" />
+                <Label layoutX="51.0" layoutY="145.0" text="Description:" textFill="#7c8189" />
+                <Label layoutX="53.0" layoutY="306.0" text="Image:" textFill="#7c8189" />
+                <TextField fx:id="bookTitle" layoutX="51.0" layoutY="94.0" prefHeight="44.0" prefWidth="350.0" promptText="title..." styleClass="input">
+                    <padding>
+                        <Insets left="10.0" />
+                    </padding></TextField>
+                <TextField fx:id="description" layoutX="51.0" layoutY="168.0" prefHeight="44.0" prefWidth="350.0" promptText="description..." styleClass="input" />
+                <Button fx:id="submitButton" layoutX="246.0" layoutY="515.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="111.0" styleClass="primary-button" text="Submit" />
+                <Text layoutX="367.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title" text="Edit book">
+                    <font>
+                        <Font name="System Bold" size="18.0" />
+                    </font>
+                </Text>
+                <Button fx:id="cancel" layoutX="511.0" layoutY="515.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="111.0" style="-fx-background-color: #ccc;" styleClass="primary-button" text="Cancel" />
+                <Text fx:id="nameFile" layoutX="50.0" layoutY="342.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No file choosen" />
+                <ImageView fx:id="imagePreview" fitHeight="80.0" fitWidth="80.0" layoutX="51.0" layoutY="390.0" pickOnBounds="true" preserveRatio="true" />
+                <Button fx:id="btnImage" layoutX="50.0" layoutY="346.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="107.0" text="Choose image" />
+                <Label layoutX="50.0" layoutY="225.0" text="Publisher:" textFill="#7c8189" />
+            <ComboBox fx:id="choicePublisher" layoutX="51.0" layoutY="249.0" prefHeight="44.0" prefWidth="350.0" promptText="name publisher..." styleClass="input" />
+            <Label layoutX="457.0" layoutY="78.0" text="Author:" textFill="#7c8189" />
+            <TextField fx:id="listAuthorName" editable="false" layoutX="457.0" layoutY="95.0" prefHeight="44.0" prefWidth="350.0" promptText="author1, author2, ..." styleClass="input" />
+            <Label layoutX="457.0" layoutY="146.0" text="Category:" textFill="#7c8189" />
+            <TextField fx:id="listCategoryName" editable="false" layoutX="457.0" layoutY="169.0" prefHeight="44.0" prefWidth="350.0" promptText="category1, category2, ..." styleClass="input" />
+            <Pane fx:id="boxSearchAuthor" layoutX="457.0" layoutY="142.0" prefHeight="200.0" prefWidth="350.0" style="-fx-background-color: #fff; -fx-background-radius: 8px; -fx-border-color: #ccc;" visible="false">
+               <children>
+                  <ListView fx:id="listAuthor" layoutX="25.0" layoutY="60.0" maxHeight="132.0" minHeight="44.0" prefWidth="300.0" />
+                  <TextField fx:id="authorName" layoutX="25.0" layoutY="7.0" prefHeight="44.0" prefWidth="300.0" promptText="author name..." styleClass="input" />
+               </children>
+            </Pane>
+            <Pane fx:id="boxSearchCategory" layoutX="457.0" layoutY="215.0" prefHeight="200.0" prefWidth="350.0" style="-fx-background-color: #fff; -fx-background-radius: 8px; -fx-border-color: #ccc;" visible="false">
+               <children>
+                  <ListView fx:id="listCategory" layoutX="25.0" layoutY="60.0" maxHeight="132.0" minHeight="44.0" prefWidth="300.0" />
+                  <TextField fx:id="categoryName" layoutX="25.0" layoutY="7.0" prefHeight="44.0" prefWidth="300.0" promptText="category name..." styleClass="input" />
+               </children>
+            </Pane>
+            </children>
+        </Pane>
+    </header>
+</DialogPane>

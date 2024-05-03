@@ -1,20 +1,19 @@
 package com.book.app.Entity;
 
-import java.sql.Date;
 import java.time.LocalDate;
 
-public class User {
-    private int id;
+public class UserEntity {
+    private String id;
     private String email;
     private String phone;
     private String address;
     private LocalDate created_at;
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 

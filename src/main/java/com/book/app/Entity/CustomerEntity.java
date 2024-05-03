@@ -1,6 +1,6 @@
 package com.book.app.Entity;
 
-public class CustomerEntity extends User{
+public class CustomerEntity extends UserEntity {
     private String first_name;
     private String last_name;
 

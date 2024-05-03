@@ -5,6 +5,7 @@ import com.book.app.Entity.EmployeeEntity;
 import com.book.app.Utils.AppUtils;
 import com.book.app.Utils.DateUtils;
 import com.book.app.Utils.SortUtils;
+import com.book.app.Utils.UIUtils;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import javafx.beans.property.SimpleStringProperty;
@@ -57,7 +58,7 @@ public class UserController implements Initializable {
     @FXML
     private TableColumn<EmployeeEntity, Void> actionCol;
     @FXML
-    private ChoiceBox<String> choiceBoxLogout;
+    private ComboBox<String> choiceBoxLogout;
     @FXML
     private TextField textSearch;
     @FXML
@@ -68,19 +69,7 @@ public class UserController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        textWelcome.setText("Hello, "+ AppUtils.getUsername());
-        textUsername.setText(AppUtils.getUsername());
-        choiceBoxLogout.getItems().add("Log out");
-        choiceBoxLogout.setOnAction(event -> {
-            if (choiceBoxLogout.getValue().equals("Log out")) {
-                AppUtils.clearData();
-                try {
-                    handleLogout(event);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        });
+        UIUtils.setupUIElements(textWelcome, textUsername, choiceBoxLogout);
         idCol.setCellValueFactory(new PropertyValueFactory<EmployeeEntity, Integer>("id"));
         nameCol.setCellValueFactory(new PropertyValueFactory<EmployeeEntity, String>("username"));
         emailCol.setCellValueFactory(new PropertyValueFactory<EmployeeEntity, String>("email"));
@@ -129,7 +118,7 @@ public class UserController implements Initializable {
                 resetPassButton.setGraphic(resetPassIcon);
                 resetPassButton.setOnAction(event -> {
                     String oldPassword = getTableView().getItems().get(getIndex()).getPassword();
-                    int userId = getTableView().getItems().get(getIndex()).getId();
+                    String userId = getTableView().getItems().get(getIndex()).getId();
                     try {
                         openDialogResetPassword(event, oldPassword, userId);
                     } catch (IOException e) {
@@ -244,7 +233,7 @@ public class UserController implements Initializable {
     private void openLockDialogUser(ActionEvent event) throws IOException {
 
     }
-    private void openDialogResetPassword(ActionEvent event, String oldPassword, int id) throws IOException {
+    private void openDialogResetPassword(ActionEvent event, String oldPassword, String id) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(rootDirectory + "dialog/reset-password.fxml"));
         Parent root = loader.load();
         Dialog<String> dialog = new Dialog<>();

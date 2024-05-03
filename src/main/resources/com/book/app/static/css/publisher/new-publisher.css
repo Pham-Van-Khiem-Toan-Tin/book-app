@@ -1,0 +1,45 @@
+.title {
+    -fx-font-size: 24px;
+    -fx-font-weight: 700;
+}
+.form {
+    -fx-pref-width: 360px;
+    -fx-background-color: #f3f3f3;
+}
+.label {
+    -fx-font-size: 12px;
+    -fx-font-weight: 700;
+}
+.title-form {
+    -fx-font-size: 18px;
+    -fx-fill: #3787fd;
+}
+.button {
+    -fx-text-fill: #fff;
+    -fx-font-weight: 700;
+    -fx-border-color: transparent;
+    -fx-border-radius: 8px;
+}
+.button:hover {
+    -fx-cursor: hand;
+}
+.primary-button {
+    -fx-background-color: #167df5;
+}
+.primary-button:hover {
+    -fx-background-color: #0056b3; /* Màu nền khi hover */
+}
+
+.primary-button:pressed {
+    -fx-background-color: #0056b3; /* Màu nền khi nhấn */
+}
+.input {
+    -fx-background-color: #fff;
+    -fx-border-color: #ced4da;
+    -fx-border-radius: 0.25em;
+    -fx-font-size: 12px;
+}
+.input:focused {
+    -fx-border-color: #80bdff;
+    -fx-box-shadow: none;
+}

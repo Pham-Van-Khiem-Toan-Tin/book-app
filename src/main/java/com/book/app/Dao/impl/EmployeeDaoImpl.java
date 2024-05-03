@@ -33,7 +33,7 @@ public class EmployeeDaoImpl implements IEmployeeDao {
                     return null;
                 }
                 user = new EmployeeEntity();
-                user.setId(resultSet.getInt("userId"));
+                user.setId(resultSet.getString("userId"));
                 user.setPassword(resultSet.getString("password"));
                 user.setUsername(resultSet.getString("username"));
                 user.setPhone(resultSet.getString("phone"));
@@ -67,7 +67,7 @@ public class EmployeeDaoImpl implements IEmployeeDao {
             resultSet = db.executeSelect();
             while (resultSet.next()) {
                 EmployeeEntity user = new EmployeeEntity();
-                user.setId(resultSet.getInt("userId"));
+                user.setId(resultSet.getString("userId"));
                 user.setPassword(resultSet.getString("password"));
                 user.setUsername(resultSet.getString("username"));
                 user.setPhone(resultSet.getString("phone"));
@@ -129,7 +129,7 @@ public class EmployeeDaoImpl implements IEmployeeDao {
             db.getPreparedStatement().setString(4, user.getAddress()); // Chuyển đổi Date sang java.sql.Date
             db.getPreparedStatement().setBoolean(5, user.getAdmin());
             db.getPreparedStatement().setDate(6, Date.valueOf(user.getUpdatedAt()));
-            db.getPreparedStatement().setInt(7, user.getId());
+            db.getPreparedStatement().setString(7, user.getId());
 
             // Thực thi truy vấn
             int rowsUpdated = db.getPreparedStatement().executeUpdate();
@@ -146,7 +146,7 @@ public class EmployeeDaoImpl implements IEmployeeDao {
     }
 
     @Override
-    public boolean lockOrUnLockEmployee(int id, Boolean enable) {
+    public boolean lockOrUnLockEmployee(String id, Boolean enable) {
         String sql = "UPDATE user " +
                 "SET isEnable = ? " +
                 "WHERE userId = ?";
@@ -154,7 +154,7 @@ public class EmployeeDaoImpl implements IEmployeeDao {
             db.initPrepar(sql);
             // Thiết lập các tham số cho câu lệnh SQL
             db.getPreparedStatement().setBoolean(1, enable);
-            db.getPreparedStatement().setInt(2, id);
+            db.getPreparedStatement().setString(2, id);
 
             // Thực thi truy vấn
             int rowsUpdated = db.getPreparedStatement().executeUpdate();
@@ -171,7 +171,7 @@ public class EmployeeDaoImpl implements IEmployeeDao {
     }
 
     @Override
-    public boolean resetPassword(int id, String newPassword) {
+    public boolean resetPassword(String id, String newPassword) {
         String sql = "UPDATE user " +
                 "SET password = ? " +
                 "WHERE userId = ?";
@@ -179,7 +179,7 @@ public class EmployeeDaoImpl implements IEmployeeDao {
             db.initPrepar(sql);
             // Thiết lập các tham số cho câu lệnh SQL
             db.getPreparedStatement().setString(1, newPassword);
-            db.getPreparedStatement().setInt(2, id);
+            db.getPreparedStatement().setString(2, id);
 
             // Thực thi truy vấn
             int rowsUpdated = db.getPreparedStatement().executeUpdate();

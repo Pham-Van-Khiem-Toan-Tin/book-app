@@ -22,7 +22,7 @@ public class ResetPasswordController implements Initializable {
     @FXML
     private Button submitBtn;
     private String oldData;
-    private int userId;
+    private String userId;
     private String oldSearch;
     private String oldSort;
     private Dialog<String> dialog;
@@ -44,11 +44,11 @@ public class ResetPasswordController implements Initializable {
         this.oldSort = oldSort;
     }
 
-    public int getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 

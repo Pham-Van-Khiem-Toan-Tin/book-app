@@ -1,9 +1,18 @@
 package com.book.app.Utils;
 
 public class AppUtils {
+    private static String id;
     private static String username;
     private static String image;
     private static String role;
+
+    public static String getId() {
+        return id;
+    }
+
+    public static void setId(String id) {
+        AppUtils.id = id;
+    }
 
     public static String getUsername() {
         return username;

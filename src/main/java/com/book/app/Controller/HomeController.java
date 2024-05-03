@@ -2,6 +2,8 @@ package com.book.app.Controller;
 
 import com.book.app.MainApplication;
 import com.book.app.Utils.AppUtils;
+import com.book.app.Utils.TokenUtil;
+import com.book.app.Utils.UIUtils;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -53,7 +55,7 @@ public class HomeController implements Initializable {
     @FXML
     private Circle author1, author2, author3;
     @FXML
-    private Button logout;
+    private Button logout, btnCategory, btnAuthor, btnPublisher;
     private int currentIndex = 0;
     private int currentIndexHot = 0;
 
@@ -106,133 +108,157 @@ public class HomeController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         username.setText(AppUtils.getUsername());
         lastList = new HBox();
-        lastList.setAlignment(Pos.CENTER);
-        lastList.setSpacing(20);
-        for (int i = 0; i < 6; i++) {
-            String imageUrl = IMAGE_URLS[i];
-            String nameBook = nameBooks[i];
-            String authorBook = authorBooks[i];
-            Image image = null;
+//        lastList.setAlignment(Pos.CENTER);
+//        lastList.setSpacing(20);
+//        for (int i = 0; i < 6; i++) {
+//            String imageUrl = IMAGE_URLS[i];
+//            String nameBook = nameBooks[i];
+//            String authorBook = authorBooks[i];
+//            Image image = null;
+//            try {
+//                image = new Image(new FileInputStream(imageUrl));
+//            } catch (FileNotFoundException e) {
+//                throw new RuntimeException(e);
+//            }
+//            ImageView imageView1 = new ImageView(image);
+//            imageView1.setFitWidth(317);
+//            imageView1.setFitHeight(134);
+//            BoxBlur blur = new BoxBlur();
+//            blur.setWidth(10);
+//            blur.setHeight(10);
+//            blur.setIterations(3);
+//            imageView1.setEffect(blur);
+//            Rectangle clip1 = new Rectangle(imageView1.getFitWidth(), imageView1.getFitHeight());
+//            clip1.setArcWidth(20);
+//            clip1.setArcHeight(20);
+//            imageView1.setClip(clip1);
+//            Text name = new Text(nameBook.toUpperCase());
+//            name.setStyle("-fx-fill: #fff; -fx-font-weight: 700; -fx-font-size: 16px; -fx-font-family: 'Segoe UI';");
+//            TextFlow nameFlow = new TextFlow(name);
+//            nameFlow.setPrefWidth(152);
+//            nameFlow.setPrefHeight(46);
+//
+//            nameFlow.setLayoutX(159);
+//            nameFlow.setLayoutY(14);
+//            Text author = new Text(authorBook.toUpperCase());
+//            author.setStyle("-fx-fill: #fff; -fx-font-weight: 700;-fx-font-family: 'Segoe UI';");
+//            TextFlow authorFlow = new TextFlow(author);
+//            authorFlow.setPrefWidth(129);
+//            authorFlow.setPrefHeight(21);
+//            authorFlow.setLayoutX(159);
+//            authorFlow.setLayoutY(77);
+//            Pane paneText = new Pane(nameFlow, authorFlow);
+//            StackPane stackPane1 = new StackPane(imageView1, paneText);
+//            stackPane1.setPrefSize(317, 134);
+//            stackPane1.setLayoutY(62);
+//            stackPane1.setStyle("-fx-background-radius: 20px");
+//            stackPane1.setCursor(Cursor.HAND);
+//            ImageView imageView2 = null;
+//            try {
+//                imageView2 = new ImageView(new Image(new FileInputStream(imageUrl)));
+//            } catch (FileNotFoundException e) {
+//                throw new RuntimeException(e);
+//            }
+//            imageView2.setFitWidth(116);
+//            imageView2.setFitHeight(181);
+//            StackPane stackPane2 = new StackPane(imageView2);
+//            Rectangle clip2 = new Rectangle(imageView2.getFitWidth(), imageView2.getFitHeight());
+//            clip2.setArcWidth(20);
+//            clip2.setArcHeight(20);
+//            imageView2.setClip(clip2);
+//            stackPane2.setPrefSize(116, 181);
+//            stackPane2.setLayoutX(26);
+//            stackPane2.setCursor(Cursor.HAND);
+//            Pane pane = new Pane(stackPane1, stackPane2);
+//            lastList.getChildren().add(pane);
+//        }
+//        lastSlider.setContent(lastList);
+//        lastSlider.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+//        nextButton1.setOnAction(event -> nextImage());
+//        preButton1.setOnAction(actionEvent -> preImage());
+//
+//        hotList = new HBox();
+//        hotList.setAlignment(Pos.CENTER);
+//        hotList.setSpacing(20);
+//        for (int i = 6; i < IMAGE_URLS.length; i++) {
+//            String urlImage = IMAGE_URLS[i];
+//            Image image = null;
+//            try {
+//                image = new Image(new FileInputStream(urlImage));
+//            } catch (FileNotFoundException e) {
+//                throw new RuntimeException(e);
+//            }
+//            ImageView imageView = new ImageView(image);
+//            imageView.setFitWidth(180);
+//            imageView.setFitHeight(250);
+//            Rectangle clip = new Rectangle(imageView.getFitWidth(), imageView.getFitHeight());
+//            clip.setArcHeight(20);
+//            clip.setArcWidth(20);
+//            imageView.setClip(clip);
+//            Pane paneImage = new Pane(imageView);
+//            paneImage.setPrefSize(180,250);
+//            paneImage.setLayoutX(10);
+//            paneImage.setLayoutX(10);
+//            Pane paneContainer = new Pane();
+//            paneContainer.setCursor(Cursor.HAND);
+//            paneContainer.getChildren().add(paneImage);
+//            hotList.getChildren().add(paneContainer);
+//        }
+//        scrollHotList.setContent(hotList);
+//        scrollHotList.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+//        nextButton2.setOnAction(event -> nextImageHot());
+//        preButton2.setOnAction(actionEvent -> preImageHot());
+//        Image imgAuthor1 = null;
+//        try {
+//            imgAuthor1 = new Image(new FileInputStream("C:\\Users\\KhiemJP\\Desktop\\Code\\book-app\\book-app\\src\\main\\resources\\com\\book\\app\\static\\images\\jkrowling.jpg"));
+//        } catch (FileNotFoundException e) {
+//            throw new RuntimeException(e);
+//        }
+//        Image imgAuthor2 = null;
+//        try {
+//            imgAuthor2 = new Image(new FileInputStream("C:\\Users\\KhiemJP\\Desktop\\Code\\book-app\\book-app\\src\\main\\resources\\com\\book\\app\\static\\images\\stevenking.jpg"));
+//        } catch (FileNotFoundException e) {
+//            throw new RuntimeException(e);
+//        }
+//        Image imgAuthor3 = null;
+//        try {
+//            imgAuthor3 = new Image(new FileInputStream("C:\\Users\\KhiemJP\\Desktop\\Code\\book-app\\book-app\\src\\main\\resources\\com\\book\\app\\static\\images\\danielSteel.jpg"));
+//        } catch (FileNotFoundException e) {
+//            throw new RuntimeException(e);
+//        }
+//        author1.setFill(new ImagePattern(imgAuthor1));
+//        author2.setFill(new ImagePattern(imgAuthor2));
+//        author3.setFill(new ImagePattern(imgAuthor3));
+//        logout.setOnAction(event -> {
+//            try {
+//                AppUtils.clearData();
+//                TokenUtil.deleteToken();
+//                handleSwitchOtherScene(event, "login/authen.fxml", null );
+//            } catch (IOException e) {
+//                throw new RuntimeException(e);
+//            }
+//        });
+        btnCategory.setOnAction(event -> {
             try {
-                image = new Image(new FileInputStream(imageUrl));
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
+                handleSwitchOtherScene(event, "category/category.fxml", "static/css/category/category.css");
+            } catch (Exception e) {
+                throw new RuntimeException();
             }
-            ImageView imageView1 = new ImageView(image);
-            imageView1.setFitWidth(317);
-            imageView1.setFitHeight(134);
-            BoxBlur blur = new BoxBlur();
-            blur.setWidth(10);
-            blur.setHeight(10);
-            blur.setIterations(3);
-            imageView1.setEffect(blur);
-            Rectangle clip1 = new Rectangle(imageView1.getFitWidth(), imageView1.getFitHeight());
-            clip1.setArcWidth(20);
-            clip1.setArcHeight(20);
-            imageView1.setClip(clip1);
-            Text name = new Text(nameBook.toUpperCase());
-            name.setStyle("-fx-fill: #fff; -fx-font-weight: 700; -fx-font-size: 16px; -fx-font-family: 'Segoe UI';");
-            TextFlow nameFlow = new TextFlow(name);
-            nameFlow.setPrefWidth(152);
-            nameFlow.setPrefHeight(46);
-
-            nameFlow.setLayoutX(159);
-            nameFlow.setLayoutY(14);
-            Text author = new Text(authorBook.toUpperCase());
-            author.setStyle("-fx-fill: #fff; -fx-font-weight: 700;-fx-font-family: 'Segoe UI';");
-            TextFlow authorFlow = new TextFlow(author);
-            authorFlow.setPrefWidth(129);
-            authorFlow.setPrefHeight(21);
-            authorFlow.setLayoutX(159);
-            authorFlow.setLayoutY(77);
-            Pane paneText = new Pane(nameFlow, authorFlow);
-            StackPane stackPane1 = new StackPane(imageView1, paneText);
-            stackPane1.setPrefSize(317, 134);
-            stackPane1.setLayoutY(62);
-            stackPane1.setStyle("-fx-background-radius: 20px");
-            stackPane1.setCursor(Cursor.HAND);
-            ImageView imageView2 = null;
+        });
+        btnAuthor.setOnAction(event -> {
             try {
-                imageView2 = new ImageView(new Image(new FileInputStream(imageUrl)));
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
+                UIUtils.handleSwitchOtherScene(event, "author/authors.fxml", "static/css/author/authors.css");
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw  new RuntimeException();
             }
-            imageView2.setFitWidth(116);
-            imageView2.setFitHeight(181);
-            StackPane stackPane2 = new StackPane(imageView2);
-            Rectangle clip2 = new Rectangle(imageView2.getFitWidth(), imageView2.getFitHeight());
-            clip2.setArcWidth(20);
-            clip2.setArcHeight(20);
-            imageView2.setClip(clip2);
-            stackPane2.setPrefSize(116, 181);
-            stackPane2.setLayoutX(26);
-            stackPane2.setCursor(Cursor.HAND);
-            Pane pane = new Pane(stackPane1, stackPane2);
-            lastList.getChildren().add(pane);
-        }
-        lastSlider.setContent(lastList);
-        lastSlider.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        nextButton1.setOnAction(event -> nextImage());
-        preButton1.setOnAction(actionEvent -> preImage());
-
-        hotList = new HBox();
-        hotList.setAlignment(Pos.CENTER);
-        hotList.setSpacing(20);
-        for (int i = 6; i < IMAGE_URLS.length; i++) {
-            String urlImage = IMAGE_URLS[i];
-            Image image = null;
+        });
+        btnPublisher.setOnAction(event -> {
             try {
-                image = new Image(new FileInputStream(urlImage));
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-            ImageView imageView = new ImageView(image);
-            imageView.setFitWidth(180);
-            imageView.setFitHeight(250);
-            Rectangle clip = new Rectangle(imageView.getFitWidth(), imageView.getFitHeight());
-            clip.setArcHeight(20);
-            clip.setArcWidth(20);
-            imageView.setClip(clip);
-            Pane paneImage = new Pane(imageView);
-            paneImage.setPrefSize(180,250);
-            paneImage.setLayoutX(10);
-            paneImage.setLayoutX(10);
-            Pane paneContainer = new Pane();
-            paneContainer.setCursor(Cursor.HAND);
-            paneContainer.getChildren().add(paneImage);
-            hotList.getChildren().add(paneContainer);
-        }
-        scrollHotList.setContent(hotList);
-        scrollHotList.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        nextButton2.setOnAction(event -> nextImageHot());
-        preButton2.setOnAction(actionEvent -> preImageHot());
-        Image imgAuthor1 = null;
-        try {
-            imgAuthor1 = new Image(new FileInputStream("C:\\Users\\KhiemJP\\Desktop\\Code\\book-app\\book-app\\src\\main\\resources\\com\\book\\app\\static\\images\\jkrowling.jpg"));
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        Image imgAuthor2 = null;
-        try {
-            imgAuthor2 = new Image(new FileInputStream("C:\\Users\\KhiemJP\\Desktop\\Code\\book-app\\book-app\\src\\main\\resources\\com\\book\\app\\static\\images\\stevenking.jpg"));
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        Image imgAuthor3 = null;
-        try {
-            imgAuthor3 = new Image(new FileInputStream("C:\\Users\\KhiemJP\\Desktop\\Code\\book-app\\book-app\\src\\main\\resources\\com\\book\\app\\static\\images\\danielSteel.jpg"));
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        author1.setFill(new ImagePattern(imgAuthor1));
-        author2.setFill(new ImagePattern(imgAuthor2));
-        author3.setFill(new ImagePattern(imgAuthor3));
-        logout.setOnAction(event -> {
-            try {
-                AppUtils.clearData();
-                handleLogout(event);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+                UIUtils.handleSwitchOtherScene(event, "publisher/publisher.fxml", "static/css/publisher/publisher.css");
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw  new RuntimeException();
             }
         });
     }
@@ -275,12 +301,15 @@ public class HomeController implements Initializable {
             transition.play();
         }
     }
-    private void handleLogout(ActionEvent event) throws IOException {
+    private void handleSwitchOtherScene(ActionEvent event, String directoryClass, String directoryCss) throws IOException {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(rootDirectory + "login/authen.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(rootDirectory  + directoryClass));
             Parent root = loader.load();
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             Scene scene = new Scene(root, 1280, 800);
+            if (directoryCss != null) {
+                scene.getStylesheets().add(getClass().getResource(rootDirectory + directoryCss).toExternalForm());
+            }
             stage.setResizable(false);
             stage.setScene(scene);
             stage.show();
@@ -288,4 +317,5 @@ public class HomeController implements Initializable {
             e.printStackTrace();
         }
     }
+
 }
