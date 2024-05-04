@@ -51,7 +51,7 @@ public class CategoryController implements Initializable {
     @FXML
     private ComboBox<String> choiceBoxLogout;
     @FXML
-    private Button newCategory, btnSearch, btnAuthor, btnCategory, btnPublisher, btnHome, btnBook, btnInventory;
+    private Button newCategory, btnSearch, btnAuthor, btnCategory, btnPublisher, btnHome, btnBook, btnInventory, btnOrder;
 
     private Parent root;
     private CategoryDaoImpl dao = new CategoryDaoImpl();
@@ -68,7 +68,7 @@ public class CategoryController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         UIUtils.setupUIElements(textWelcome, textUsername, choiceBoxLogout);
-        UIUtils.setupMenuEmployee(btnAuthor, btnCategory, btnPublisher, btnHome, btnBook, btnInventory);
+        UIUtils.setupMenuEmployee(btnAuthor, btnCategory, btnPublisher, btnHome, btnBook, btnInventory, btnOrder);
         idCol.setCellValueFactory(new PropertyValueFactory<CategoryEntity, String>("id"));
         nameCol.setCellValueFactory(new PropertyValueFactory<CategoryEntity, String>("name"));
         desCol.setCellValueFactory(new PropertyValueFactory<CategoryEntity, String>("description"));

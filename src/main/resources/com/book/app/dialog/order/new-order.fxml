@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.DialogPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+
+<DialogPane prefHeight="700.0" prefWidth="1149.0" style="-fx-padding: 0; -fx-background-color: #fff;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.book.app.Controller.employee.order.NewOrderController">
+    <header>
+        <Pane prefHeight="708.0" prefWidth="1149.0" style="-fx-background-color: #fff;">
+            <children>
+                <TextField fx:id="bookTitle" layoutX="51.0" layoutY="94.0" prefHeight="44.0" prefWidth="608.0" promptText="book name..." styleClass="input">
+                    <padding>
+                        <Insets left="10.0" />
+                    </padding></TextField>
+                <Button fx:id="submitButton" layoutX="300.0" layoutY="660.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="111.0" styleClass="primary-button" text="Submit" />
+                <Text layoutX="521.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="title" text="New Order">
+                    <font>
+                        <Font name="System Bold" size="18.0" />
+                    </font>
+                </Text>
+                <TableView fx:id="listBook" layoutX="48.0" layoutY="172.0" prefHeight="466.0" prefWidth="611.0">
+                    <columns>
+                        <TableColumn fx:id="nameCol" prefWidth="247.99998092651367" text="name" />
+                        <TableColumn fx:id="quantityCol" prefWidth="106.0" text="quantity" />
+                        <TableColumn fx:id="priceCol" prefWidth="159.0" text="unit price" />
+                        <TableColumn fx:id="actionCol" prefWidth="96.00006103515625" text="action" />
+                    </columns>
+                </TableView>
+                <Button fx:id="cancel" layoutX="894.0" layoutY="660.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="111.0" style="-fx-background-color: #ccc;" styleClass="primary-button" text="Cancel" />
+                <Pane fx:id="searchBox" layoutX="51.0" layoutY="150.0" prefHeight="278.0" prefWidth="609.0" style="-fx-background-color: #fff; -fx-border-color: #ccc;" visible="false">
+                    <children>
+                        <ListView fx:id="listBookSearch" layoutX="14.0" layoutY="17.0" prefHeight="246.0" prefWidth="581.0" styleClass="list-search" />
+                    </children>
+                </Pane>
+            <TextFlow layoutX="702.0" layoutY="172.0" prefHeight="24.0" prefWidth="247.0">
+               <children>
+                  <Text fx:id="totalText" strokeType="OUTSIDE" strokeWidth="0.0" text="Total: 0" wrappingWidth="152.5537109375">
+                     <font>
+                        <Font name="System Bold" size="18.0" />
+                     </font>
+                  </Text>
+               </children>
+            </TextFlow>
+            <CheckBox fx:id="checkboxCustomer" layoutX="702.0" layoutY="218.0" mnemonicParsing="false" text="Customer Info:">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </CheckBox>
+            <Pane fx:id="boxCustomer" layoutX="702.0" layoutY="252.0" prefHeight="275.0" prefWidth="413.0" visible="false">
+               <children>
+                  <Label layoutX="14.0" layoutY="27.0" text="Name:" />
+                  <TextField fx:id="customerName" layoutX="14.0" layoutY="44.0" prefHeight="40.0" prefWidth="375.0" styleClass="input" />
+                  <Label layoutX="14.0" layoutY="99.0" text="Phone number:" />
+                  <TextField fx:id="phoneNumber" layoutX="14.0" layoutY="116.0" prefHeight="40.0" prefWidth="375.0" styleClass="input" />
+                  <Label layoutX="14.0" layoutY="176.0" text="Email:" />
+                  <TextField fx:id="customerMail" layoutX="14.0" layoutY="197.0" prefHeight="40.0" prefWidth="375.0" styleClass="input" />
+               </children>
+            </Pane>
+            </children>
+        </Pane>
+    </header>
+</DialogPane>

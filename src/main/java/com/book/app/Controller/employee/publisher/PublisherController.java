@@ -52,7 +52,7 @@ public class PublisherController implements Initializable {
     @FXML
     private ComboBox<String> choiceBoxLogout;
     @FXML
-    private Button newPublisher, btnSearch, btnAuthor, btnCategory, btnPublisher, btnHome, btnBook;
+    private Button newPublisher, btnSearch, btnAuthor, btnCategory, btnPublisher, btnHome, btnBook, btnInventory, btnOrder;
 
     private Parent root;
     private PublisherDaoImpl dao = new PublisherDaoImpl();
@@ -69,7 +69,7 @@ public class PublisherController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         UIUtils.setupUIElements(textWelcome, textUsername, choiceBoxLogout);
-        UIUtils.setupMenuEmployee(btnAuthor, btnCategory, btnPublisher, btnHome, btnBook);
+        UIUtils.setupMenuEmployee(btnAuthor, btnCategory, btnPublisher, btnHome, btnBook, btnInventory, btnOrder);
         idCol.setCellValueFactory(new PropertyValueFactory<PublisherEntity, String>("id"));
         nameCol.setCellValueFactory(new PropertyValueFactory<PublisherEntity, String>("name"));
         desCol.setCellValueFactory(new PropertyValueFactory<PublisherEntity, String>("description"));

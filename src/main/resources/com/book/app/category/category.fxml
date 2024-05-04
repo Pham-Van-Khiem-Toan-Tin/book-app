@@ -116,7 +116,7 @@
                         <Cursor fx:constant="HAND" />
                     </cursor>
                 </Button>
-                <Button alignment="BASELINE_LEFT" ellipsisString="" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="186.0" styleClass="button-menu" text="Order" textFill="#7d7d7d">
+                <Button fx:id="btnOrder" alignment="BASELINE_LEFT" ellipsisString="" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="186.0" styleClass="button-menu" text="Order" textFill="#7d7d7d">
                     <graphic>
                         <FontAwesomeIconView fill="#7d7d7d" glyphName="BRIEFCASE" style="-glyph-size: 20px;" />
                     </graphic>

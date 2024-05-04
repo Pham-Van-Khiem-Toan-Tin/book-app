@@ -60,14 +60,14 @@ public class BookController implements Initializable {
     @FXML
     private ComboBox<String> choiceBoxLogout;
     @FXML
-    private Button newBook, btnSearch, btnBook, btnCategory, btnPublisher, btnHome;
+    private Button newBook, btnSearch, btnBook, btnCategory, btnPublisher, btnHome, btnInventory, btnAuthor, btnOrder;
 
     private Parent root;
     private BookDaoImpl dao = new BookDaoImpl();
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         UIUtils.setupUIElements(textWelcome, textUsername, choiceBoxLogout);
-        UIUtils.setupMenuEmployee(btnBook, btnCategory, btnPublisher, btnHome, btnBook);
+        UIUtils.setupMenuEmployee(btnAuthor, btnCategory, btnPublisher, btnHome, btnBook, btnInventory, btnOrder);
         idCol.setCellValueFactory(new PropertyValueFactory<BookEntity, String>("id"));
         nameCol.setCellValueFactory(new PropertyValueFactory<BookEntity, String>("name"));
         imageCol.setCellFactory(param -> new TableCell<BookEntity, Void>() {

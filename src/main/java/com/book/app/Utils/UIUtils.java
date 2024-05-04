@@ -63,9 +63,38 @@ public class UIUtils {
                     directoryCss = "static/css/inventory/inventory.css";
                     break;
                 case "Order":
-                    directoryClass = "home/home.fxml";
-                    directoryCss = "static/css/home.css";
+                    directoryClass = "order/order.fxml";
+                    directoryCss = "static/css/order/order.css";
                     break;
+                case "User Management":
+                    directoryClass = "admin/user-management.fxml";
+                    directoryCss = "static/css/user-management.css";
+                    break;
+                case "Sale Book":
+                    directoryClass = "admin/sale/sale-book-management.fxml";
+                    directoryCss = "static/css/sale/sale-book-management.css";
+                    break;
+                case "Sale Category":
+                    directoryClass = "admin/sale/sale-category.fxml";
+                    directoryCss = "static/css/sale/sale-book-management.css";
+                    break;
+                case "Sale Author":
+                    directoryClass = "admin/sale/sale-author.fxml";
+                    directoryCss = "static/css/sale/sale-book-management.css";
+                    break;
+                case "Sale Customer":
+                    directoryClass = "admin/sale/sale-customer.fxml";
+                    directoryCss = "static/css/sale/sale-book-management.css";
+                    break;
+                case "Sale Employee":
+                    directoryClass = "admin/sale/sale-employee.fxml";
+                    directoryCss = "static/css/sale/sale-book-management.css";
+                    break;
+                case "Sale Publisher":
+                    directoryClass = "admin/sale/sale-publisher.fxml";
+                    directoryCss = "static/css/sale/sale-book-management.css";
+                    break;
+
             }
             String finalDirectoryClass = directoryClass;
             String finalDirectoryCss = directoryCss;

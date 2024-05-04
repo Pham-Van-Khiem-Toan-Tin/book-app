@@ -62,7 +62,7 @@ public class UserController implements Initializable {
     @FXML
     private TextField textSearch;
     @FXML
-    private Button btnSearch;
+    private Button btnSearch, btnUser, btnSaleBook, btnSaleAuthor, btnSaleCategory, btnSalePublisher, btnSaleCustomer, btnSaleEmployee;
     @FXML
     private ComboBox<String> sortCombo;
     private EmployeeDaoImpl dao = new EmployeeDaoImpl();
@@ -70,6 +70,7 @@ public class UserController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         UIUtils.setupUIElements(textWelcome, textUsername, choiceBoxLogout);
+        UIUtils.setupMenuEmployee(btnUser, btnSaleBook, btnSaleCategory, btnSaleAuthor, btnSalePublisher, btnSaleCustomer, btnSaleEmployee);
         idCol.setCellValueFactory(new PropertyValueFactory<EmployeeEntity, Integer>("id"));
         nameCol.setCellValueFactory(new PropertyValueFactory<EmployeeEntity, String>("username"));
         emailCol.setCellValueFactory(new PropertyValueFactory<EmployeeEntity, String>("email"));

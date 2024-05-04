@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface InventoryDao {
     List<InventoryEntity> getAllInventory(String keyword, String sort);
-    boolean addInventory(InventoryEntity inventory);
+    boolean addInventory(List<BookEntity> bookEntityList);
     List<BookEntity> getBookToInventory(List<String> listBookSelected);
 }

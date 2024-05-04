@@ -62,7 +62,7 @@ public class AuthorController implements Initializable {
     @FXML
     private ComboBox<String> choiceBoxLogout;
     @FXML
-    private Button newAuthor, btnSearch, btnAuthor, btnCategory, btnPublisher, btnHome, btnBook;
+    private Button newAuthor, btnSearch, btnAuthor, btnCategory, btnPublisher, btnHome, btnBook, btnInventory, btnOrder;
 
     private Parent root;
     private AuthorDaoImpl dao = new AuthorDaoImpl();
@@ -79,7 +79,7 @@ public class AuthorController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         UIUtils.setupUIElements(textWelcome, textUsername, choiceBoxLogout);
-        UIUtils.setupMenuEmployee(btnAuthor, btnCategory, btnPublisher, btnHome, btnBook);
+        UIUtils.setupMenuEmployee(btnAuthor, btnCategory, btnPublisher, btnHome, btnBook, btnInventory, btnOrder);
         idCol.setCellValueFactory(new PropertyValueFactory<AuthorEntity, String>("id"));
         nameCol.setCellValueFactory(new PropertyValueFactory<AuthorEntity, String>("name"));
         imageCol.setCellFactory(param -> new TableCell<AuthorEntity, Void>() {

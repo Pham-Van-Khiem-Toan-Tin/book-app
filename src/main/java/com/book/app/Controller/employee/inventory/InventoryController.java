@@ -56,11 +56,11 @@ public class InventoryController implements Initializable {
     private Parent root;
     private InventoryDaoImpl dao = new InventoryDaoImpl();
     @FXML
-    private Button createInventory, btnSearch, btnAuthor, btnCategory, btnPublisher, btnHome, btnBook, btnInventory;
+    private Button createInventory, btnSearch, btnAuthor, btnCategory, btnPublisher, btnHome, btnBook, btnInventory, btnOrder;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         UIUtils.setupUIElements(textWelcome, textUsername, choiceBoxLogout);
-        UIUtils.setupMenuEmployee(btnAuthor, btnCategory, btnPublisher, btnHome, btnBook, btnInventory);
+        UIUtils.setupMenuEmployee(btnAuthor, btnCategory, btnPublisher, btnHome, btnBook, btnInventory , btnOrder);
         idCol.setCellValueFactory(new PropertyValueFactory<InventoryEntity, String>("id"));
         quantityCol.setCellValueFactory(new PropertyValueFactory<InventoryEntity, String>("quantityBook"));
         costCol.setCellValueFactory(new PropertyValueFactory<InventoryEntity, String>("totalCost"));

@@ -32,7 +32,7 @@
                      </image>
                   </ImageView>
                </children></Pane>
-            <Button alignment="BASELINE_LEFT" ellipsisString="" mnemonicParsing="false" prefHeight="48.0" prefWidth="239.0" style="-fx-background-color: transperent; -fx-graphic-text-gap: 15px; -fx-font-weight: 700;" text="User" textFill="#4a85f6">
+            <Button fx:id="btnUser" alignment="BASELINE_LEFT" ellipsisString="" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="239.0" style="-fx-background-color: transperent;" text="User Management" textFill="#4a85f6">
                <graphic>
                   <FontAwesomeIconView fill="#4a85f6" glyphName="USER" style="-glyph-size: 20px;" />
                </graphic>
@@ -46,12 +46,12 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Button alignment="BASELINE_LEFT" ellipsisString="" mnemonicParsing="false" prefHeight="48.0" prefWidth="239.0" style="-fx-background-color: transperent; -fx-graphic-text-gap: 15px; -fx-font-weight: 700;" text="Book" textFill="#7d7d7d">
+            <Button fx:id="btnSaleBook" alignment="BASELINE_LEFT" ellipsisString="" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="239.0" style="-fx-background-color: transperent;" text="Sale Book" textFill="#7d7d7d">
                <graphic>
                   <FontAwesomeIconView fill="#7d7d7d" glyphName="BOOK" style="-glyph-size: 20px;" />
                </graphic>
                <font>
-                  <Font name="Segoe UI" size="13.0" />
+                  <Font name="Segoe UI Bold" size="13.0" />
                </font>
                <padding>
                   <Insets left="40.0" />
@@ -60,12 +60,12 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Button alignment="BASELINE_LEFT" ellipsisString="" mnemonicParsing="false" prefHeight="48.0" prefWidth="239.0" style="-fx-background-color: transperent; -fx-graphic-text-gap: 15px; -fx-font-weight: 700;" text="Category" textFill="#7d7d7d">
+            <Button fx:id="btnSaleCategory" alignment="BASELINE_LEFT" ellipsisString="" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="239.0" style="-fx-background-color: transperent;" text="Sale Category" textFill="#7d7d7d">
                <graphic>
-                  <FontAwesomeIconView fill="#7d7d7d" glyphName="CLIPBOARD" style="-glyph-size: 20px;" />
+                  <FontAwesomeIconView fill="#7d7d7d" glyphName="TH_LIST" style="-glyph-size: 20px;" />
                </graphic>
                <font>
-                  <Font name="Segoe UI" size="13.0" />
+                  <Font name="Segoe UI Bold" size="13.0" />
                </font>
                <padding>
                   <Insets left="40.0" />
@@ -74,12 +74,26 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Button alignment="BASELINE_LEFT" ellipsisString="" mnemonicParsing="false" prefHeight="48.0" prefWidth="239.0" style="-fx-background-color: transperent; -fx-graphic-text-gap: 15px; -fx-font-weight: 700;" text="Customer" textFill="#7d7d7d">
+            <Button fx:id="btnSaleAuthor" alignment="BASELINE_LEFT" ellipsisString="" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="239.0" style="-fx-background-color: transperent;" text="Sale Author" textFill="#7d7d7d">
+               <graphic>
+                  <FontAwesomeIconView fill="#7d7d7d" glyphName="USER_ALT" style="-glyph-size: 20px;" />
+               </graphic>
+               <font>
+                  <Font name="Segoe UI Bold" size="13.0" />
+               </font>
+               <padding>
+                  <Insets left="40.0" />
+               </padding>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button fx:id="btnSaleCustomer" alignment="BASELINE_LEFT" ellipsisString="" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="239.0" style="-fx-background-color: transperent;" text="Sale Customer" textFill="#7d7d7d">
                <graphic>
                   <FontAwesomeIconView fill="#7d7d7d" glyphName="USERS" style="-glyph-size: 20px;" />
                </graphic>
                <font>
-                  <Font name="Segoe UI" size="13.0" />
+                  <Font name="Segoe UI Bold" size="13.0" />
                </font>
                <padding>
                   <Insets left="40.0" />
@@ -88,12 +102,26 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Button alignment="BASELINE_LEFT" ellipsisString="" mnemonicParsing="false" prefHeight="48.0" prefWidth="239.0" style="-fx-background-color: transperent; -fx-graphic-text-gap: 15px; -fx-font-weight: 700;" text="Employee" textFill="#7d7d7d">
+            <Button fx:id="btnSaleEmployee" alignment="BASELINE_LEFT" ellipsisString="" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="239.0" style="-fx-background-color: transperent;" text="Sale Employee" textFill="#7d7d7d">
                <graphic>
                   <FontAwesomeIconView fill="#7d7d7d" glyphName="USER_SECRET" style="-glyph-size: 20px;" />
                </graphic>
                <font>
-                  <Font name="Segoe UI" size="13.0" />
+                  <Font name="Segoe UI Bold" size="13.0" />
+               </font>
+               <padding>
+                  <Insets left="40.0" />
+               </padding>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button fx:id="btnSalePublisher" alignment="BASELINE_LEFT" ellipsisString="" graphicTextGap="15.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="239.0" style="-fx-background-color: transperent;" text="Sale Publisher" textFill="#7d7d7d">
+               <graphic>
+                  <FontAwesomeIconView fill="#7d7d7d" glyphName="INBOX" style="-glyph-size: 20px;" />
+               </graphic>
+               <font>
+                  <Font name="Segoe UI Bold" size="13.0" />
                </font>
                <padding>
                   <Insets left="40.0" />

@@ -25,4 +25,8 @@ module com.book.app {
     opens com.book.app.Controller.employee.book to javafx.fxml;
     exports com.book.app.Controller.employee.inventory;
     opens com.book.app.Controller.employee.inventory to javafx.fxml;
+    exports com.book.app.Controller.employee.order;
+    opens com.book.app.Controller.employee.order to javafx.fxml;
+    exports com.book.app.Controller.admin.sale;
+    opens com.book.app.Controller.admin.sale to javafx.fxml;
 }

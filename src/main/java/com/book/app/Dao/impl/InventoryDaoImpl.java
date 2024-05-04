@@ -10,12 +10,17 @@ import com.book.app.Utils.AppUtils;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class InventoryDaoImpl implements InventoryDao {
     private DBConnection db = new DBConnection();
     private ResultSet resultSet;
+
     @Override
     public List<InventoryEntity> getAllInventory(String keyword, String sort) {
         String sql = "SELECT imported_sheet_id, quantity_book, total_cost, created_at FROM book_imported_sheet WHERE user_id = ?";
@@ -47,8 +52,52 @@ public class InventoryDaoImpl implements InventoryDao {
     }
 
     @Override
-    public boolean addInventory(InventoryEntity inventory) {
-        return false;
+    public boolean addInventory(List<BookEntity> bookEntityList) {
+        String inventory_sheet_sql = "INSERT INTO book_imported_sheet (imported_sheet_id, user_id, quantity_book, total_cost, created_at) " +
+                "VALUES (?, ?, ?, ?, ?)";
+        String inventory_item_sql = "INSERT INTO imported_books (imported_sheet_id, book_id, stoke, quantity, cost) " +
+                "VALUES (?, ?, ?, ?, ?)";
+        String quantity_book_sql = "UPDATE book " +
+                "SET quantity = quantity + ? " +
+                "WHERE book_id = ?";
+        try {
+            AtomicReference<Double> total = new AtomicReference<>(0.0);
+            AtomicReference<Integer> quantity = new AtomicReference<>(0);
+            bookEntityList.stream().forEach(item -> {
+                quantity.updateAndGet(v -> v + item.getQuantity());
+                total.updateAndGet(v -> v + item.getCost() * item.getQuantity());
+            });
+            String idSheet = "sheet-" + AppUtils.getId() + "-" + System.currentTimeMillis();
+            Connection conn = db.getConnection();
+            conn.setAutoCommit(false);
+            PreparedStatement sheetStmt = conn.prepareStatement(inventory_sheet_sql);
+            sheetStmt.setString(1, idSheet);
+            sheetStmt.setString(2, AppUtils.getId());
+            sheetStmt.setInt(3, quantity.get());
+            sheetStmt.setDouble(4, total.get());
+            sheetStmt.setTimestamp(5, Timestamp.valueOf(LocalDateTime.now()));
+            sheetStmt.executeUpdate();
+            PreparedStatement itemOfSheetStmt = conn.prepareStatement(inventory_item_sql);
+            PreparedStatement quantityBookStmt = conn.prepareStatement(quantity_book_sql);
+            for (BookEntity book : bookEntityList) {
+                itemOfSheetStmt.setString(1, idSheet);
+                itemOfSheetStmt.setString(2, book.getId());
+                itemOfSheetStmt.setInt(3, book.getQuantity());
+                itemOfSheetStmt.setInt(4, book.getQuantity());
+                itemOfSheetStmt.setDouble(5, book.getCost());
+                itemOfSheetStmt.addBatch();
+                quantityBookStmt.setInt(1, book.getQuantity());
+                quantityBookStmt.setString(2, book.getId());
+                quantityBookStmt.addBatch();
+            }
+            itemOfSheetStmt.executeBatch();
+            quantityBookStmt.executeBatch();
+            conn.commit();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override
@@ -56,7 +105,7 @@ public class InventoryDaoImpl implements InventoryDao {
         String sql = "SELECT b.book_id, b.title, b.url_image, p.name AS publisher" +
                 " FROM book b" +
                 " JOIN publisher p ON b.publisherId = p.publisher_id";
-        if (listBookSelected.size() > 0) {git add .
+        if (listBookSelected.size() > 0) {
             sql += " WHERE b.book_id NOT IN (";
             for (int i = 0; i < listBookSelected.size(); i++) {
                 sql += " ?,";
@@ -73,7 +122,7 @@ public class InventoryDaoImpl implements InventoryDao {
                 }
             }
             resultSet = db.executeSelect();
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 BookEntity book = new BookEntity();
                 PublisherEntity publisher = new PublisherEntity();
                 book.setId(resultSet.getString("book_id"));

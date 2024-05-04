@@ -8,10 +8,19 @@ public class BookEntity  extends BaseEntity {
     private String image_public_id;
     private double price;
     private int quantity;
+    private int stock;
     private double cost;
     private PublisherEntity publisher;
     private List<AuthorEntity> authors;
     private List<CategoryEntity> categories;
+
+    public int getStock() {
+        return stock;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
 
     public double getCost() {
         return cost;
